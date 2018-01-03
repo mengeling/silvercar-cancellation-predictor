@@ -14,15 +14,13 @@ def create_days_to_pickup(df):
     return df["days_to_pickup"].dt.total_seconds() / 86400
 
 
-def load_reservations(filename, sample):
+def load_reservations(filename):
     df = pd.read_csv(filename)
-    if sample:
-        df = df.iloc[:40, :]
     df["days_to_pickup"] = create_days_to_pickup(df)
     df["used_promo"] = (df["promo_code_id"].notnull()).astype(int)
-    df = df["user_id", "current_state", "days_to_pickup", "reservation_frequency", "used_promo"]
+    df = df[["user_id", "current_state", "days_to_pickup", "reservation_frequency", "used_promo"]]
     df["current_state"] = df["current_state"].map({"cancelled": 1, "finished": 0})
-    return pd.get_dummies(df)
+    return df
 
 
 def load_users(filename):
@@ -33,21 +31,27 @@ def load_users(filename):
 
 def merge_data(df1, df2):
     df = df1.join(df2, how="left", on="user_id")
-    df.drop("user_id", axis=1, inplace=True)
     df.dropna(inplace=True)
     return df
 
 
-def clean_data(sample=False):
-    df_reservations = load_reservations('../data/silvercar_reservations.csv', sample)
+def get_data():
+    df_reservations = load_reservations('../data/silvercar_reservations.csv')
     df_users = load_users('../data/silvercar_users.csv')
     return merge_data(df_reservations, df_users)
 
 
-if __name__ == '__main__':
-    df = clean_data()
+def prepare_data(df):
+    df.drop("user_id", axis=1, inplace=True)
+    df = pd.get_dummies(df)
     y = df.pop("current_state").values
     X = df.values
+    return X, y
+
+
+if __name__ == '__main__':
+    df = get_data()
+    X, y = prepare_data(df)
     lr = LogisticRegression()
     lr.fit(X, y)
     with open('model.pkl', 'wb') as f:

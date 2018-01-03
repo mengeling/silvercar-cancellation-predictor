@@ -1,24 +1,27 @@
 from flask import Flask, request, render_template
 import pickle
 import numpy as np
+import pandas as pd
 import sys
 sys.path.append('..')
-from model.build_model import clean_data
+from model.build_model import get_data
 
 app = Flask(__name__)
 
 
-with open('data/model.pkl', 'rb') as f:
+with open('../model/model.pkl', 'rb') as f:
     model = pickle.load(f)
-df = clean_data(sample=True)
-df.pop("current_state")
-probs = model.predict_proba(df.values)
-print(probs)
+df = get_data().sample(30)
+temp_df = df.drop(['user_id', 'current_state'], axis=1)
+X = pd.get_dummies(temp_df).values
+df["predictions"] = model.predict(X)
+df["probabilities"] = model.predict_proba(X)[:, 1]
+sum_preds = int(np.sum(df["predictions"]))
 
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', data=df.to_html(index=False), res_count=len(df), res_cancel=sum_preds)
 
 
 @app.route('/submit', methods=['POST'])

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Reservation Dashboard</title>
+		<meta charset="utf-8">
+	  	<meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/styles.css')}}">
+	</head>
+
+	<body>
+        <h1>Reservation Dashboard</h1>
+        <div>
+            <p>Current Reservations: {{ res_count }}</p>
+            <p>Predicted Cancellations: {{ res_cancel }}</p>
+        </div>
+        <div>
+            {{ data | safe }}
+        </div>
+	</body>
+</html>
