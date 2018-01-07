@@ -3,8 +3,8 @@ import pickle
 import numpy as np
 import pandas as pd
 import sys
-sys.path.append('..')
-from model.build_model import get_data
+sys.path.append('../model')
+from model import get_data
 
 app = Flask(__name__)
 
@@ -32,4 +32,6 @@ def submit():
 
 
 if __name__ == '__main__':
+    with open('../model/model.pkl', 'rb') as f:
+        model = pickle.load(f)
     app.run(host='0.0.0.0', port=8080, debug=True)
