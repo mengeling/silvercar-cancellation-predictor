@@ -25,15 +25,13 @@ def get_datetime(series):
     return pd.to_datetime('1899-12-30') + pd.to_timedelta(series, 'D')
 
 
-def create_days_to_pickup(df):
-    df["pickup"] = get_datetime(df["pickup"])
-    df["created_at"] = get_datetime(df["created_at"])
-    return (df["pickup"] - df["created_at"]).dt.total_seconds() / 86400
+def calculate_datetime_difference(series1, series2):
+    return (get_datetime(series1) - get_datetime(series2)).dt.total_seconds() / 86400
 
 
 def load_reservations(filename):
     df = pd.read_csv(filename)
-    df["days_to_pickup"] = create_days_to_pickup(df)
+    df["days_to_pickup"] = calculate_datetime_difference(df["pickup"], df["created_at"])
     df["used_promo"] = (df["promo_code_id"].notnull()).astype(int)
     df["current_state"] = df["current_state"].map({"cancelled": 1, "finished": 0})
     return df[["user_id", "current_state", "days_to_pickup", "reservation_frequency", "used_promo"]]
