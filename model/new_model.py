@@ -1,54 +1,47 @@
 import pickle
 import pandas as pd
+from sqlalchemy import create_engine
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 
 
-def prepare_data(df):
-    df = pd.get_dummies(df)
-    y = df.pop("current_state").values
-    X = df.values
-    return X, y
-
-
-def merge_data(df1, df2):
-    df = df1.join(df2, how="left", on="user_id")
-    df.drop("user_id", axis=1, inplace=True)
-    return df.dropna()
-
-
-def load_users(filename):
-    df = pd.read_csv(filename)
-    return df[["id", "sign_in_count"]].set_index("id")
-
-
-def get_datetime(series):
-    return pd.to_datetime('1899-12-30') + pd.to_timedelta(series, 'D')
-
-
-def calculate_datetime_difference(series1, series2):
-    return (get_datetime(series1) - get_datetime(series2)).dt.total_seconds() / 86400
-
-
-def load_reservations(filename):
-    df = pd.read_csv(filename)
-    df["days_to_pickup"] = calculate_datetime_difference(df["pickup"], df["created_at"])
-    df["used_promo"] = (df["promo_code_id"].notnull()).astype(int)
-    df["current_state"] = df["current_state"].map({"cancelled": 1, "finished": 0})
-    return df[["user_id", "current_state", "days_to_pickup", "reservation_frequency", "used_promo"]]
-
+# class DataType(BaseEstimator, TransformerMixin):
+#     return
 
 def get_data():
-    df_reservations = load_reservations('../data/silvercar_reservations.csv')
-    df_users = load_users('../data/silvercar_users.csv')
-    return merge_data(df_reservations, df_users)
+    """
+    Query PSQL database to get all of the features needed for the model
+    """
+    engine = create_engine('postgresql://mengeling:mengeling@localhost:5432/silvercar')
+    df_reservations = pd.read_sql_query(
+        "SELECT r.id, r.user_id, r.pickup_location_id, r.current_state, r.created_as_guest, r.local_rental, "
+        "r.awards_referral_bonus, r.pickup, r.dropoff, r.created_at, r.updated_at, r.promo_code_id, "
+        "r.booking_application, r.reservation_frequency, l.time_zone "
+        "FROM reservations r "
+        "LEFT JOIN locations l ON r.pickup_location_id = l.id "
+        "WHERE current_state != 'booked' AND current_state != 'pending_agreement'",
+        con=engine
+    )
+    df_users = pd.read_sql_query(
+        "SELECT u.id, u.is_gds_user, u.referral_code, i.is_corporate, i.is_personal, i.is_silvercar, c.postal_code "
+        "FROM users u "
+        "LEFT JOIN insurance i ON u.id = i.user_id "
+        "LEFT JOIN user_profile p ON u.id = p.user_id "
+        "LEFT JOIN credit_cards c ON p.id = c.user_profile_id"
+        , con=engine
+    ).set_index("id")
+    df_users = df_users[~df_users.index.duplicated(keep='first')]
+    return df_reservations.join(df_users, on="user_id", how="left")
 
 
 if __name__ == '__main__':
     df = get_data()
-    X, y = prepare_data(df)
-    lr = LogisticRegression()
-    lr.fit(X, y)
-    with open('model.pkl', 'wb') as f:
-        pickle.dump(lr, f)
+
+    print(df.head())
+    print(df2.head())
+    # X, y = prepare_data(df)
+    # lr = LogisticRegression()
+    # lr.fit(X, y)
+    # with open('model.pkl', 'wb') as f:
+    #     pickle.dump(lr, f)
