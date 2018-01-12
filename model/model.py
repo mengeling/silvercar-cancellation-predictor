@@ -1,8 +1,6 @@
 import numpy as np
 import pandas as pd
 from sqlalchemy import create_engine
-from collections import defaultdict
-from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
@@ -16,30 +14,23 @@ class CancellationModel:
         """
         Initialize model
         """
-        self.X = None
-        self.y = None
         self.pipeline = None
-        self.d = None
         self.classifer = classifier
 
     def fit(self, df, y):
         """
         Transforms the training data and then fits the model
         """
-        self.X = df
-        self.y = y
-        self.X, self.d = Pipeline()
-        self.X = self.scaler.fit_transform(self.X.values)
-        self.classifer.fit(self.X, self.y)
+        self.pipeline = Pipeline()
+        X = self.pipeline.fit_transform(df, y)
+        self.classifer.fit(X, y)
 
     def predict_proba(self, df):
         """
         Transforms the test data and then calculates probabilities
         """
-        self.X = df
-        self.pipeline = Pipeline(booked=True)
-        self.X = self.scaler.transform(self.X.values)
-        return self.classifer.predict_proba(self.X)[:, 1]
+        X = self.pipeline.transform(df)
+        return self.classifer.predict_proba(X)[:, 1]
 
     def predict(self, df):
         """
@@ -51,8 +42,6 @@ class CancellationModel:
         """
         Calculates the accuracy of the model's predictions
         """
-        predictions = self.predict(df)
-        print(predictions, y)
         return accuracy_score(y, self.predict(df))
 
 
