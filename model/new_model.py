@@ -1,13 +1,39 @@
 import pickle
 import pandas as pd
 from sqlalchemy import create_engine
-from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.linear_model import LogisticRegression
-from sklearn.pipeline import Pipeline
 
 
-# class DataType(BaseEstimator, TransformerMixin):
-#     return
+class Pipeline:
+    def __init__(self):
+        ''' initialize model '''
+        self.vect = TfidfVectorizer()
+        self.rf_text = RandomForestClassifier(n_estimators=50)
+        self.rf_num = RandomForestClassifier(n_estimators=50)
+
+    def fit(self, X_text, X_num, y):
+        ''' fit model based on training data '''
+        X_text = self.vect.fit_transform(X_text)
+        self.rf_text.fit(X_text, y)
+        self.rf_num.fit(X_num, y)
+
+    def predict_proba(self, X_text, X_num):
+        ''' calculate probability that item is fraud '''
+        X_t = self.vect.transform(X_text)
+        pred_txt = self.rf_text.predict_proba(X_t)[:, 1]
+        pred_num = self.rf_num.predict_proba(X_num)[:, 1]
+        return np.mean([pred_txt, pred_num], axis=0)
+
+    def predict(self, X_text, X_num):
+        ''' predict true/false for item '''
+        proba = self.predict_proba(X_text, X_num)
+        return (proba > THRESHOLD).astype(int)
+
+    @staticmethod
+    def get_datetime(series):
+        return pd.to_datetime('1899-12-30') + pd.to_timedelta(series, 'D')
+
+    @staticmethod
+    def
 
 def get_data():
     """
@@ -28,18 +54,20 @@ def get_data():
         "FROM users u "
         "LEFT JOIN insurance i ON u.id = i.user_id "
         "LEFT JOIN user_profile p ON u.id = p.user_id "
-        "LEFT JOIN credit_cards c ON p.id = c.user_profile_id"
-        , con=engine
-    ).set_index("id")
+        "LEFT JOIN credit_cards c ON p.id = c.user_profile_id",
+        con=engine
+    )
     df_users = df_users[~df_users.index.duplicated(keep='first')]
-    return df_reservations.join(df_users, on="user_id", how="left")
+    return df_reservations.join(df_users.set_index("id"), on="user_id", how="left")
 
 
 if __name__ == '__main__':
     df = get_data()
-
+    df["current_state"] = ((df["current_state"] != "finished") & (df["current_state"] != "started")).astype(int)
+    y = df.pop("current_state").values
+    model = CancellationModel()
+    model.fit(df, y)
     print(df.head())
-    print(df2.head())
     # X, y = prepare_data(df)
     # lr = LogisticRegression()
     # lr.fit(X, y)
