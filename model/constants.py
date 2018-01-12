@@ -27,12 +27,9 @@ USERS = (
 
 THRESHOLD = 0.5
 
-DATE_FEATURES_TO_DROP = ["pickup", "dropoff", "created_at", "updated_at"]
-
 WEB_APPS = ["web", "web-desktop", "web-mobile", "web-tablet"]
 
-INSURANCE_DICT = {"is_corporate": "insurance_corp", "is_silvercar": "insurance_silvercar",
-                  "is_personal": "insurance_personal"}
-
-OTHER_FEATURES_TO_DROP = ["promo_code_id", "booking_application", "reservation_frequency", "referral_code",
-                          "postal_code", "time_zone"]
+FEATURES_TO_KEEP = ["created_as_guest", "local_rental", "awards_referral_bonus", "is_gds_user", "insurance_corporate",
+                    "insurance_personal", "insurance_silvercar", "days_to_pickup", "trip_duration", "weekend_pickup",
+                    "winter_pickup", "used_promo", "used_referral", "credit_card", "web_booking", "new_customer",
+                    "western_pickup", "past_rides", "past_cancellations", "past_percent_cancelled"]
