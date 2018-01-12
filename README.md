@@ -1,1 +1,1 @@
-# Galvanize DSI Capstone
+# Silvercar Rental Car Cancellation Predictor

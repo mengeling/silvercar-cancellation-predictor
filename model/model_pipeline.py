@@ -4,12 +4,32 @@ from sqlalchemy import create_engine
 from collections import defaultdict
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 
 import constants as C
 
 
-class Pipeline():
+class ChangeDataTypes(BaseEstimator, TransformerMixin):
+    """Cast the data types of the pickup, drop, and created at columns to datetimes
+    from numbers.
+    """
+    col_types = {'str': ['MachineID', 'ModelID', 'datasource']}
+
+    def fit(self, X, y):
+        return self
+
+    def transform(self, X):
+        for col_type, column in self.col_types.iteritems():
+            X[column] = X[column].astype(col_type)
+        X['saledate_converted'] = pd.to_datetime(X.saledate)
+        return X
+
+
+
+
+class tipeline():
     def __init__(self):
         """
         Initialize model
@@ -95,6 +115,15 @@ if __name__ == '__main__':
     df = get_data()
     df["current_state"] = ((df["current_state"] != "finished") & (df["current_state"] != "started")).astype(int)
     y = df.pop("current_state").values
+    p = Pipeline([
+        ('type_change', ChangeDataTypes()),
+        ('replace_outliers', ReplaceOutliers()),
+        ('compute_age', ComputeAge()),
+        ('nearest_average', ComputeNearestMean()),
+        ('columns', ColumnFilter()),
+        ('lm', LinearRegression())
+    ])
+
     pipeline = Pipeline()
     pipeline.fit(df, y)
     df_booked = get_data(booked=True)
