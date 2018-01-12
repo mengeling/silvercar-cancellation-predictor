@@ -38,12 +38,10 @@ class Pipeline():
         self.X_booked = self.scaler.fit_transform(self.df.values)
 
     def _create_date_features(self):
-        self._change_datetimes("pickup", "dropoff", "created_at", "updated_at")
-        self._calculate_time_between(days_to_pickup=("pickup", "created_at"), trip_duration=("dropoff", "pickup"),
-                                     updated_time=("updated_at", "created_at"))
+        self._change_datetimes("pickup", "dropoff", "created_at")
+        self._calculate_time_between(days_to_pickup=("pickup", "created_at"), trip_duration=("dropoff", "pickup"))
         self.df["weekend_pickup"] = self.df["pickup"].dt.dayofweek.isin([4, 5, 6]).astype(int)
         self.df["winter_pickup"] = self.df["pickup"].dt.month.isin([1, 12]).astype(int)
-        self.df["updated_reservation"] = (self.df["updated_at"].dt.date > self.df["created_at"].dt.date).astype(int)
         self.df.drop(C.DATE_FEATURES_TO_DROP, axis=1, inplace=True)
 
     def _create_binary_features(self):
