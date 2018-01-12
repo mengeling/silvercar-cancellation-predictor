@@ -11,11 +11,10 @@ from sklearn.linear_model import LogisticRegression
 import constants as C
 
 
-class ChangeDataTypes(BaseEstimator, TransformerMixin):
-    """Cast the data types of the pickup, drop, and created at columns to datetimes
-    from numbers.
+class FillNulls(BaseEstimator, TransformerMixin):
     """
-    col_types = {'str': ['MachineID', 'ModelID', 'datasource']}
+    Fill null values
+    """
 
     def fit(self, X, y):
         return self
@@ -25,6 +24,18 @@ class ChangeDataTypes(BaseEstimator, TransformerMixin):
             X[column] = X[column].astype(col_type)
         X['saledate_converted'] = pd.to_datetime(X.saledate)
         return X
+
+
+class ChangeDataTypes(BaseEstimator, TransformerMixin):
+    """
+    Cast the data types of the pickup, drop, and created at columns to datetimes
+    from numbers.
+    """
+    def fit(self, X, y):
+        return self
+
+    def transform(self, X):
+        return X.fillna(value={"is_corporate": 0, "is_silvercar": 0, "is_personal": 0, "is_gds_user": 0})
 
 
 
@@ -116,6 +127,7 @@ if __name__ == '__main__':
     df["current_state"] = ((df["current_state"] != "finished") & (df["current_state"] != "started")).astype(int)
     y = df.pop("current_state").values
     p = Pipeline([
+        ('fill_nulls', FillNulls()),
         ('type_change', ChangeDataTypes()),
         ('replace_outliers', ReplaceOutliers()),
         ('compute_age', ComputeAge()),

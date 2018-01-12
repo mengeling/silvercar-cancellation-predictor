@@ -17,12 +17,15 @@ BOOKED_RESERVATIONS = (
 )
 
 USERS = (
-    "SELECT u.id, u.is_gds_user, u.referral_code, i.is_corporate, i.is_personal, i.is_silvercar, c.postal_code "
+    "SELECT u.id, u.is_gds_user, u.referral_code, i.insurance_corporate, i.insurance_personal, "
+    "i.insurance_silvercar, c.postal_code "
     "FROM users u "
     "LEFT JOIN insurance i ON u.id = i.user_id "
     "LEFT JOIN user_profile p ON u.id = p.user_id "
     "LEFT JOIN credit_cards c ON p.id = c.user_profile_id"
 )
+
+THRESHOLD = 0.5
 
 DATE_FEATURES_TO_DROP = ["pickup", "dropoff", "created_at", "updated_at"]
 
