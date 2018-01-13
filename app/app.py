@@ -21,6 +21,7 @@ def index():
 
 @app.route('/new-reservation/')
 def new_reservation():
+    # print(request.form['text'])
     # text = np.array([request.form['text']])
     # probability = model.predict_proba(text)[0]
     # prediction = probability > C.THRESHOLD
