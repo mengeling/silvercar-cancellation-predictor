@@ -6,7 +6,7 @@ import sys
 from sqlalchemy import create_engine
 
 sys.path.append('../model')
-from model import get_data, CancellationModel
+from model import CancellationModel
 import constants as C
 
 app = Flask(__name__)
@@ -14,8 +14,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    df = pd.read_sql_query("SELECT * FROM locations", con=engine)
-    return render_template('index.html', data=df.to_html(index=False), res_count=len(df), res_cancel=sum_preds)
+    df = pd.read_sql_query("SELECT * FROM booked", con=engine)
+
+    return render_template('index.html', data=df.to_html(index=False), res_count=len(df),
+                           res_cancel=df["predictions"].sum())
 
 
 @app.route('/submit', methods=['POST'])

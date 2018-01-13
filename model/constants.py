@@ -10,7 +10,7 @@ PAST_RESERVATIONS = (
 
 BOOKED_RESERVATIONS = (
     "SELECT r.user_id, r.created_as_guest, r.local_rental, r.awards_referral_bonus, r.pickup, r.dropoff, "
-    "r.created_at, r.promo_code_id, r.booking_application, r.reservation_frequency, l.time_zone "
+    "r.created_at, r.promo_code_id, r.booking_application, r.reservation_frequency, l.time_zone, l.name "
     "FROM reservations r "
     "LEFT JOIN locations l ON r.pickup_location_id = l.id "
     "WHERE current_state = 'booked';"

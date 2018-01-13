@@ -49,21 +49,20 @@ def get_data(booked=False):
     Query and join 6 tables from Postgres database to get all of the features needed for the model
     """
     df_reservations = pd.read_sql_query(C.BOOKED_RESERVATIONS if booked else C.PAST_RESERVATIONS, con=engine)
-    df_users = pd.read_sql_query(C.USERS, con=engine)
+    df_users = pd.read_sql_query(C.USERS, con=engine).set_index("id")
     df_users = df_users[~df_users.index.duplicated(keep='first')]
-    return df_reservations.join(df_users.set_index("id"), on="user_id", how="left")
+    return df_reservations.join(df_users, on="user_id", how="left")
 
 
 def create_booked_table(df, model):
     """
     Create Postgres table for the booked DataFrame and predictions and probabilities
     """
-    probabilities = model.predict_proba(df)
+    probabilities = model.predict_proba(df.copy())
     predictions = (probabilities > C.THRESHOLD).astype(int)
     df["probabilities"] = probabilities
     df["predictions"] = predictions
-    engine.execute("DROP TABLE IF EXISTS booked;")
-    df.to_sql("booked", engine)
+    df.to_sql("booked", engine, if_exists="replace", index=False)
 
 
 if __name__ == '__main__':
