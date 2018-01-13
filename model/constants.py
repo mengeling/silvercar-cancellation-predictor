@@ -5,15 +5,15 @@ PAST_RESERVATIONS = (
     "r.pickup, r.dropoff, r.created_at, r.promo_code_id, r.booking_application, r.reservation_frequency, l.time_zone "
     "FROM reservations r "
     "LEFT JOIN locations l ON r.pickup_location_id = l.id "
-    "WHERE current_state != 'booked' AND current_state != 'pending_agreement'"
+    "WHERE current_state != 'booked' AND current_state != 'pending_agreement';"
 )
 
 BOOKED_RESERVATIONS = (
-    "SELECT r.user_id, r.current_state, r.created_as_guest, r.local_rental, r.awards_referral_bonus, r.pickup, "
-    "r.dropoff, r.created_at, r.promo_code_id, r.booking_application, r.reservation_frequency, l.time_zone "
+    "SELECT r.user_id, r.created_as_guest, r.local_rental, r.awards_referral_bonus, r.pickup, r.dropoff, "
+    "r.created_at, r.promo_code_id, r.booking_application, r.reservation_frequency, l.time_zone "
     "FROM reservations r "
     "LEFT JOIN locations l ON r.pickup_location_id = l.id "
-    "WHERE current_state = 'booked'"
+    "WHERE current_state = 'booked';"
 )
 
 USERS = (
@@ -22,7 +22,7 @@ USERS = (
     "FROM users u "
     "LEFT JOIN insurance i ON u.id = i.user_id "
     "LEFT JOIN user_profile p ON u.id = p.user_id "
-    "LEFT JOIN credit_cards c ON p.id = c.user_profile_id"
+    "LEFT JOIN credit_cards c ON p.id = c.user_profile_id;"
 )
 
 THRESHOLD = 0.5

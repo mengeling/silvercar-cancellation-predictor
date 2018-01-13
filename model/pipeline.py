@@ -15,13 +15,22 @@ class Pipeline:
         self.scaler = StandardScaler()
 
     def fit_transform(self, df, y):
+        """
+        Fit and transform the training data
+        """
         self.y_mean = y.mean()
         return self._run_pipeline(df, y)
 
     def transform(self, df):
+        """
+        Transform the test data
+        """
         return self._run_pipeline(df)
 
     def _run_pipeline(self, df, y=None):
+        """
+        Make all of the requisite changes to the DataFrame
+        """
         df = self._create_date_features(df)
         df = self._create_binary_features(df)
         df = self._create_historical_features(df, y)
@@ -83,7 +92,7 @@ class Pipeline:
 
     def _get_past_ride_cnt(self, df, y):
         """
-        Iterates through user IDs to look up and append the user's past rides to the ride_history list. During training,
+        Iterate through user IDs to look up and append the user's past rides to the ride_history list. During training,
         the current reservation's label is added to the dictionary, so the result of the ride is recorded for the next
         time the user appears in the DataFrame. Returns the ride_history list to be added to the DataFrame.
         """

@@ -3,24 +3,18 @@ import pickle
 import numpy as np
 import pandas as pd
 import sys
+from sqlalchemy import create_engine
+
 sys.path.append('../model')
-from model import get_data
+from model import get_data, CancellationModel
+import constants as C
 
 app = Flask(__name__)
 
 
-with open('../model/model.pkl', 'rb') as f:
-    model = pickle.load(f)
-df = get_data().sample(30)
-temp_df = df.drop(['user_id', 'current_state'], axis=1)
-X = pd.get_dummies(temp_df).values
-df["predictions"] = model.predict(X)
-df["probabilities"] = model.predict_proba(X)[:, 1]
-sum_preds = int(np.sum(df["predictions"]))
-
-
 @app.route('/')
 def index():
+    df = pd.read_sql_query("SELECT * FROM locations", con=engine)
     return render_template('index.html', data=df.to_html(index=False), res_count=len(df), res_cancel=sum_preds)
 
 
@@ -32,6 +26,7 @@ def submit():
 
 
 if __name__ == '__main__':
+    engine = create_engine(C.ENGINE)
     with open('../model/model.pkl', 'rb') as f:
         model = pickle.load(f)
     app.run(host='0.0.0.0', port=8080, debug=True)

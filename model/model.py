@@ -1,8 +1,7 @@
-import numpy as np
+import pickle
 import pandas as pd
 from sqlalchemy import create_engine
 from sklearn.metrics import accuracy_score
-from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 
 import constants as C
@@ -49,20 +48,33 @@ def get_data(booked=False):
     """
     Query and join 6 tables from Postgres database to get all of the features needed for the model
     """
-    engine = create_engine(C.ENGINE)
     df_reservations = pd.read_sql_query(C.BOOKED_RESERVATIONS if booked else C.PAST_RESERVATIONS, con=engine)
     df_users = pd.read_sql_query(C.USERS, con=engine)
     df_users = df_users[~df_users.index.duplicated(keep='first')]
     return df_reservations.join(df_users.set_index("id"), on="user_id", how="left")
 
 
+def create_booked_table(df, model):
+    """
+    Create Postgres table for the booked DataFrame and predictions and probabilities
+    """
+    probabilities = model.predict_proba(df)
+    predictions = (probabilities > C.THRESHOLD).astype(int)
+    df["probabilities"] = probabilities
+    df["predictions"] = predictions
+    engine.execute("DROP TABLE IF EXISTS booked;")
+    df.to_sql("booked", engine)
+
+
 if __name__ == '__main__':
+    engine = create_engine(C.ENGINE)
     df = get_data()
     df["current_state"] = ((df["current_state"] != "finished") & (df["current_state"] != "started")).astype(int)
     y = df.pop("current_state").values
-    X_train, X_test, y_train, y_test = train_test_split(df, y)
     model = CancellationModel(LogisticRegression())
-    model.fit(X_train, y_train)
-    print(model.score(X_test, y_test))
+    model.fit(df, y)
     df_booked = get_data(booked=True)
-    print(np.sum(model.predict(df_booked.drop("current_state", axis=1))))
+    create_booked_table(df_booked, model)
+    with open('model.pkl', 'wb') as f:
+        pickle.dump(model, f)
+
