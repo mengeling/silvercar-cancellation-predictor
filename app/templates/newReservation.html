@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Reservation Dashboard</title>
+		<meta charset="utf-8">
+	  	<meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/styles.css')}}">
+	</head>
+
+	<body>
+        <h1>New Reservation</h1>
+        <p>Probability: {{ probability }}</p>
+        <p>Prediction: {{ prediction }}</p>
+        <div>
+            <form class="form-new-reservation" action="/new-reservation">
+                <fieldset>
+					<label class="form-label">Name:</label>
+					<input class="form-input" type="text" name="name" placeholder="Name of Movie">
+                    <label class="form-label">Rating:</label>
+					<input class="form-input" type="number" min="0" max="10" step="0.1" name="rating" placeholder="Number from 0 - 10">
+                    <label class="form-label">Genre:</label>
+					<select class="form-input" name="genre">
+						{% for genre in genres %}
+							<option value="{{genre.id}}">{{genre.name}}</option>
+						{% endfor %}
+					</select>
+                    <label class="form-label">Description:</label>
+					<textarea class="form-input" name="description" rows="10"></textarea>
+				</fieldset>
+				<input class="submit-button" type="submit" value="Update Prediction">
+            </form>
+        </div>
+	</body>
+</html>

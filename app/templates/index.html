@@ -12,6 +12,9 @@
         <div>
             <p>Current Reservations: {{ res_count }}</p>
             <p>Predicted Cancellations: {{ res_cancel }}</p>
+            <form class="reservation-button" action="/new-reservation">
+                <input type="submit" value="Create New Reservation" />
+            </form>
         </div>
         <div>
             {{ data | safe }}

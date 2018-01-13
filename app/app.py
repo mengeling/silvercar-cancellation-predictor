@@ -15,16 +15,16 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     df = pd.read_sql_query("SELECT * FROM booked", con=engine)
-
     return render_template('index.html', data=df.to_html(index=False), res_count=len(df),
                            res_cancel=df["predictions"].sum())
 
 
-@app.route('/submit', methods=['POST'])
-def submit():
-    text = np.array([request.form['text']])
-    prediction = model.predict(text)[0]
-    return render_template('submit.html', prediction=prediction)
+@app.route('/new-reservation/')
+def new_reservation():
+    # text = np.array([request.form['text']])
+    # probability = model.predict_proba(text)[0]
+    # prediction = probability > C.THRESHOLD
+    return render_template('newReservation.html', probability=None, prediction=None)
 
 
 if __name__ == '__main__':

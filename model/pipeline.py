@@ -35,7 +35,7 @@ class Pipeline:
         df = self._create_binary_features(df)
         df = self._create_historical_features(df, y)
         df = self._filter_data(df)
-        return self.scaler.fit_transform(df.values) if y is not None else self.scaler.transform(df.values)
+        return self.scaler.fit_transform(df) if y is not None else self.scaler.transform(df)
 
     def _create_date_features(self, df):
         """

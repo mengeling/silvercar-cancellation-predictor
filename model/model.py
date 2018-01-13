@@ -14,7 +14,7 @@ class CancellationModel:
         Initialize model
         """
         self.pipeline = None
-        self.classifer = classifier
+        self.classifier = classifier
 
     def fit(self, df, y):
         """
@@ -22,14 +22,14 @@ class CancellationModel:
         """
         self.pipeline = Pipeline()
         X = self.pipeline.fit_transform(df, y)
-        self.classifer.fit(X, y)
+        self.classifier.fit(X, y)
 
     def predict_proba(self, df):
         """
         Transforms the test data and then calculates probabilities
         """
-        X = self.pipeline.transform(df)
-        return self.classifer.predict_proba(X)[:, 1]
+        X = self.pipeline.transform(df.copy())
+        return self.classifier.predict_proba(X)[:, 1]
 
     def predict(self, df):
         """
@@ -44,7 +44,7 @@ class CancellationModel:
         return accuracy_score(y, self.predict(df))
 
 
-def get_data(booked=False):
+def get_data(engine, booked=False):
     """
     Query and join 6 tables from Postgres database to get all of the features needed for the model
     """
@@ -54,7 +54,7 @@ def get_data(booked=False):
     return df_reservations.join(df_users, on="user_id", how="left")
 
 
-def create_booked_table(df, model):
+def create_booked_table(engine, df, model):
     """
     Create Postgres table for the booked DataFrame and predictions and probabilities
     """
@@ -67,13 +67,13 @@ def create_booked_table(df, model):
 
 if __name__ == '__main__':
     engine = create_engine(C.ENGINE)
-    df = get_data()
+    df = get_data(engine)
     df["current_state"] = ((df["current_state"] != "finished") & (df["current_state"] != "started")).astype(int)
     y = df.pop("current_state").values
     model = CancellationModel(LogisticRegression())
     model.fit(df, y)
-    df_booked = get_data(booked=True)
-    create_booked_table(df_booked, model)
+    df_booked = get_data(engine, booked=True)
+    create_booked_table(engine, df_booked, model)
     with open('model.pkl', 'wb') as f:
         pickle.dump(model, f)
 

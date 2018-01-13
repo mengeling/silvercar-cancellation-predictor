@@ -3,3 +3,24 @@ body {
   display: block;
   width: 100%;
 }
+
+.reservation-button {
+  margin-bottom: 2%;
+}
+
+.form-label {
+  font-weight: bold;
+  width: 100%;
+  display: block;
+  text-align: left;
+}
+
+.form-input {
+  width: 100%;
+  font-size: 0.85em;
+  margin-bottom: 2%;
+}
+
+.submit-button {
+  margin-top: 2%;
+}
