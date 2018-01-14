@@ -28,9 +28,7 @@
                 <p class="cancel_count">Predicted Cancellations: {{ cancel_count }}</p>
                 <p class="revenue">Predicted Revenue: {{ revenue }}</p>
             </div>
-            <form class="new-reservation-button" action="{{ url_for('new_reservation') }}">
-                <input type="submit" value="Create New Reservation" />
-            </form>
+            <a class="new-reservation-button" href="{{ url_for('new_reservation') }}">Create New Reservation</a>
         </div>
         <div class="data">
             {{ data | safe }}

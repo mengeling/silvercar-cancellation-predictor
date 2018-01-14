@@ -5,7 +5,13 @@ body {
 }
 
 .new-reservation-button {
+  display: inline-block;
   margin-bottom: 2%;
+}
+
+.form-new-reservation {
+  margin: 0 auto;
+  width: 70%;
 }
 
 .form-label {

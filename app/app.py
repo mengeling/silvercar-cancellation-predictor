@@ -21,16 +21,23 @@ def index():
     )
 
 
-@app.route('/new-reservation/', methods=['GET', 'POST'])
+@app.route('/new-reservation/')
 def new_reservation():
-    if request.method == 'POST':
-        # probability = request.form['text']
-        probability = 0.8
-        return render_template('new_reservation.html', probability=probability, prediction=None)
-    # text = np.array([request.form['text']])
-    # probability = model.predict_proba(text)[0]
-    # prediction = probability > C.THRESHOLD
-    return render_template('new_reservation.html', probability=None, prediction=None)
+    return render_template('new_reservation.html')
+
+# Cancelled average = 0.4112255607631243
+
+
+# @app.route('/new-reservation/', methods=['GET', 'POST'])
+# def new_reservation():
+#     if request.method == 'POST':
+#         probability = request.form['text']
+#         probability = 0.8
+#         return render_template('new_reservation.html', probability=probability, prediction=None)
+#     text = np.array([request.form['text']])
+#     probability = model.predict_proba(text)[0]
+#     prediction = probability > C.THRESHOLD
+#     return render_template('new_reservation.html', probability=None, prediction=None)
 
 
 @app.route('/get_subset/', methods=['GET'])
