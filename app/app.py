@@ -14,27 +14,11 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html', data=df.to_html(index=False), location="All", locations=locations,
-                           total_count=len(df), cancel_count=df["predictions"].sum())
-
-
-@app.route('/', methods=['GET', 'POST'])
-def reservations():
-    if request.method == "POST":
-        print(request.form, request.args)
-        location = request.form.get("locations", None)
-        print(location)
-        if location is not None:
-            df_location = df if location == "All" else df[df["name"] == location]
-            return render_template(
-                'index.html', data=df_location.to_html(index=False), location=location, locations=locations,
-                res_count=len(df_location), res_cancel=df_location["predictions"].sum()
-            )
-    # df_location = df[df["name"] == location]
-    # print(df_location.head())
-    # return render_template('show_reservations.html',
-    #                        data=df_location.to_html(index=False), locations=np.sort(df["name"].unique()),
-    #                        res_count=len(df), res_cancel=df["predictions"].sum())
+    return render_template(
+        'index.html', data=df.to_html(index=False), locations=np.sort(df["name"].unique()),
+        months=df["month"].unique(), revenue="${:,}".format(int(df[df["prediction"] == 0]["price"].sum())),
+        total_count="{:,}".format(len(df)), cancel_count="{:,}".format(df["prediction"].sum())
+    )
 
 
 @app.route('/new-reservation/', methods=['GET', 'POST'])
@@ -49,16 +33,19 @@ def new_reservation():
     return render_template('new_reservation.html', probability=None, prediction=None)
 
 
-@app.route('/location_subset/', methods=['GET'])
-def location_subset():
+@app.route('/get_subset/', methods=['GET'])
+def get_subset():
     location = request.args.get('location', None)
-    if location is not None:
-        df_location = df if location == "All" else df[df["name"] == location]
+    month = request.args.get('month', None)
+    if location is not None and month is not None:
+        df_subset = df if location == "All" else df[df["name"] == location]
+        df_subset = df_subset if month == "All" else df_subset[df_subset["month"] == month]
         d = {
             "location": location,
-            "total_count": len(df_location),
-            "cancel_count": df_location["predictions"].sum(),
-            "data": df_location.to_html(index=False)
+            "total_count": "{:,}".format(df_subset.shape[0]),
+            "cancel_count": "{:,}".format(df_subset["prediction"].sum()),
+            "revenue": "${:,.0f}".format(df_subset[df_subset["prediction"] == 0]["price"].sum()),
+            "data": df_subset.to_html(index=False)
         }
         return jsonify(d)
 
@@ -68,5 +55,4 @@ if __name__ == '__main__':
     with open('../model/model.pkl', 'rb') as f:
         model = pickle.load(f)
     df = pd.read_sql_query("SELECT * FROM booked", con=engine)
-    locations = np.sort(df["name"].unique())
     app.run(host='0.0.0.0', port=8080, debug=True)

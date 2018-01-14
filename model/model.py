@@ -58,11 +58,13 @@ def create_booked_table(engine, df, model):
     """
     Create Postgres table for the booked DataFrame and predictions and probabilities
     """
-    probabilities = model.predict_proba(df.copy())
-    predictions = (probabilities > C.THRESHOLD).astype(int)
-    df["probabilities"] = probabilities
-    df["predictions"] = predictions
-    df.to_sql("booked", engine, if_exists="replace", index=False)
+    df["probability"] = model.predict_proba(df)
+    df["prediction"] = model.predict(df)
+    df["pickup"] = pd.to_datetime('1899-12-30') + pd.to_timedelta(df["pickup"], 'D')
+    df["dropoff"] = pd.to_datetime('1899-12-30') + pd.to_timedelta(df["dropoff"], 'D')
+    df["month"] = df["pickup"].dt.strftime('%B, %Y')
+    df["price"] = 50 * ((df["dropoff"] - df["pickup"]).dt.total_seconds() / 86400)
+    df.sort_values("pickup").to_sql("booked", engine, if_exists="replace", index=False)
 
 
 if __name__ == '__main__':

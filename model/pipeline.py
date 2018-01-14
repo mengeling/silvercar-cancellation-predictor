@@ -42,7 +42,8 @@ class Pipeline:
         Create all date-related features needed for the model
         """
         df = self._change_datetimes(df, "pickup", "dropoff", "created_at")
-        df = self._calculate_time_between(df, days_to_pickup=("pickup", "created_at"),
+        df = self._calculate_time_between(df,
+                                          days_to_pickup=("pickup", "created_at"),
                                           trip_duration=("dropoff", "pickup"))
         df["weekend_pickup"] = df["pickup"].dt.dayofweek.isin([4, 5, 6]).astype(int)
         df["winter_pickup"] = df["pickup"].dt.month.isin([1, 12]).astype(int)
@@ -83,6 +84,7 @@ class Pipeline:
         """
         Create all features related to user ride history
         """
+        df.sort_values("pickup", inplace=True)
         df["rides"] = self._get_past_ride_cnt(df, y)
         df["past_rides"] = df["rides"].apply(lambda lst: len(lst))
         df["past_cancellations"] = df["rides"].apply(lambda lst: sum(lst))

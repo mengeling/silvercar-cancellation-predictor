@@ -7,17 +7,28 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
 	</head>
 	<body>
-        <h1 class="header">{{ location }} Reservations</h1>
+        <h1 class="header">All Reservations</h1>
         <div>
-            <select name="select">
-                <option value="All">All Locations</option>
-                {% for l in locations %}
-                <option value="{{l}}">{{l}}</option>
-                {% endfor %}
-            </select>
-            <p class="total-count">Current Reservations: {{ total_count }}</p>
-            <p class="cancel_count">Predicted Cancellations: {{ cancel_count }}</p>
-            <form class="new-reservation-button" action="/new-reservation/">
+            <div>
+                <select class="select-location" name="select">
+                    <option value="All">All Locations</option>
+                    {% for location in locations %}
+                    <option value="{{ location }}">{{ location }}</option>
+                    {% endfor %}
+                </select>
+                <select class="select-month" name="select">
+                    <option value="All">All Months</option>
+                    {% for month in months %}
+                    <option value="{{ month }}">{{ month }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <p class="total-count">Current Reservations: {{ total_count }}</p>
+                <p class="cancel_count">Predicted Cancellations: {{ cancel_count }}</p>
+                <p class="revenue">Predicted Revenue: {{ revenue }}</p>
+            </div>
+            <form class="new-reservation-button" action="{{ url_for('new_reservation') }}">
                 <input type="submit" value="Create New Reservation" />
             </form>
         </div>
