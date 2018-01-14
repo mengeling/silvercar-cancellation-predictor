@@ -12,7 +12,7 @@
         <p>Probability: {{ probability }}</p>
         <p>Prediction: {{ prediction }}</p>
         <div>
-            <form class="form-new-reservation" action="/new-reservation">
+            <form class="form-new-reservation" method="POST" action="/new-reservation/">
                 <fieldset>
 					<label class="form-label">Credit Card:</label>
 					<input class="form-input" type="text" name="credit_card" placeholder="Entered Credit Card?">

@@ -4,20 +4,28 @@
 		<title>Reservation Dashboard</title>
 		<meta charset="utf-8">
 	  	<meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/styles.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
 	</head>
-
 	<body>
-        <h1>Reservation Dashboard</h1>
+        <h1 class="header">{{ location }} Reservations</h1>
         <div>
-            <p>Current Reservations: {{ res_count }}</p>
-            <p>Predicted Cancellations: {{ res_cancel }}</p>
-            <form class="reservation-button" action="/new-reservation">
+            <select name="select">
+                <option value="All">All Locations</option>
+                {% for l in locations %}
+                <option value="{{l}}">{{l}}</option>
+                {% endfor %}
+            </select>
+            <p class="total-count">Current Reservations: {{ total_count }}</p>
+            <p class="cancel_count">Predicted Cancellations: {{ cancel_count }}</p>
+            <form class="new-reservation-button" action="/new-reservation/">
                 <input type="submit" value="Create New Reservation" />
             </form>
         </div>
-        <div>
+        <div class="data">
             {{ data | safe }}
         </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 	</body>
 </html>
