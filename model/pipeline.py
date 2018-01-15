@@ -1,6 +1,7 @@
 import pandas as pd
 from collections import defaultdict
 from sklearn.preprocessing import StandardScaler
+from sqlalchemy import create_engine
 
 import constants as C
 
@@ -27,6 +28,19 @@ class Pipeline:
         """
         return self._run_pipeline(df)
 
+    def transform_individual(self, df):
+        """
+        Transform a single reservation from the app demo
+        """
+        df = df.apply(pd.to_numeric, errors='ignore')
+        df = self._create_date_features(df, individual=True)
+        df = self._create_insurance_features(df, "Corporate", "Personal", "Silvercar")
+        df = self._calculate_percent_cancelled(df)
+        df = self._create_western_binary(df)
+        df.replace({"Yes": 1, "No": 0, True: 1, False: 0}, inplace=True)
+        df = self._filter_data(df)
+        return self.scaler.transform(df)
+
     def _run_pipeline(self, df, y=None):
         """
         Make all of the requisite changes to the DataFrame
@@ -37,11 +51,11 @@ class Pipeline:
         df = self._filter_data(df)
         return self.scaler.fit_transform(df) if y is not None else self.scaler.transform(df)
 
-    def _create_date_features(self, df):
+    def _create_date_features(self, df, individual=False):
         """
         Create all date-related features needed for the model
         """
-        df = self._change_datetimes(df, "pickup", "dropoff", "created_at")
+        df = self._change_datetimes(df, individual, "pickup", "dropoff", "created_at")
         df = self._calculate_time_between(df,
                                           days_to_pickup=("pickup", "created_at"),
                                           trip_duration=("dropoff", "pickup"))
@@ -50,12 +64,16 @@ class Pipeline:
         return df
 
     @staticmethod
-    def _change_datetimes(df, *args):
+    def _change_datetimes(df, individual, *args):
         """
         Change timestamp columns from numbers to datetimes
         """
-        for col_name in args:
-            df[col_name] = pd.to_datetime('1899-12-30') + pd.to_timedelta(df[col_name], 'D')
+        if individual:
+            for col_name in args:
+                df[col_name] = pd.to_datetime(df[col_name])
+        else:
+            for col_name in args:
+                df[col_name] = pd.to_datetime('1899-12-30') + pd.to_timedelta(df[col_name], 'D')
         return df
 
     @staticmethod
@@ -104,6 +122,36 @@ class Pipeline:
             if y is not None:
                 self.d[user_id].append(y[i])
         return ride_history
+
+    @staticmethod
+    def _create_insurance_features(df, *args):
+        """
+        Create the three binary insurance features
+        """
+        for arg in args:
+            col_name = "insurance_{}".format(arg.lower())
+            df[col_name] = df["insurance"].iloc[0] == arg
+        return df
+
+    def _calculate_percent_cancelled(self, df):
+        """
+        Create the past_percent_cancelled and western_pickup features
+        """
+        if df["past_rides"].sum() == 0:
+            df["past_percent_cancelled"] = self.y_mean
+        else:
+            df["past_percent_cancelled"] = df["past_cancellations"] / df["past_rides"]
+        return df
+
+    @staticmethod
+    def _create_western_binary(df):
+        """
+        Create the past_percent_cancelled and western_pickup features
+        """
+        engine = create_engine(C.ENGINE)
+        time_zone = engine.execute(C.GET_TIME_ZONE.format(df["location"].iloc[0])).fetchone()[0]
+        df["western_pickup"] = (time_zone == "pst") | (time_zone == "mst")
+        return df
 
     @staticmethod
     def _filter_data(df):

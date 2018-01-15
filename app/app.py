@@ -33,46 +33,25 @@ def get_df_subset():
     if location is not None and month is not None:
         df_subset = df if location == "All" else df[df["name"] == location]
         df_subset = df_subset if month == "All" else df_subset[df_subset["month"] == month]
-        d = {
-            "location": location,
+        return jsonify(
+            {"location": location,
             "total_count": "{:,}".format(df_subset.shape[0]),
             "cancel_count": "{:,}".format(df_subset["prediction"].sum()),
             "revenue": "${:,.0f}".format(df_subset[df_subset["prediction"] == 0]["price"].sum()),
-            "data": df_subset.to_html(index=False)
-        }
-        return jsonify(d)
+            "data": df_subset.to_html(index=False)}
+        )
 
 
 @app.route('/calculate_probability/', methods=['GET'])
 def calculate_probability():
     df_new = pd.DataFrame(request.args, index=[0])
-    df_new = df_new.apply(pd.to_numeric, errors='ignore')
-    df_new["past_percent_cancelled"] = df_new["past_cancellations"] / df_new["past_rides"]\
-        if df_new["past_rides"].sum() != 0 else 0.41
-    time_zone = df[df["name"] == df_new["location"].iloc[0]]["time_zone"].iloc[0]
-    df_new["western_pickup"] = (time_zone == "pst") | (time_zone == "mst")
-    df_new["insurance_corporate"] = df_new["insurance"].iloc[0] == "Corporate"
-    df_new["insurance_personal"] = df_new["insurance"].iloc[0] == "Personal"
-    df_new["insurance_silvercar"] = df_new["insurance"].iloc[0] == "Silvercar"
-    df_new["created_at"] = pd.to_datetime(df_new["created_at"])
-    df_new["pickup"] = pd.to_datetime(df_new["pickup"])
-    df_new["dropoff"] = pd.to_datetime(df_new["dropoff"])
-    df_new["days_to_pickup"] = (df_new["pickup"] - df_new["created_at"]).dt.total_seconds() / 86400
-    df_new["trip_duration"] = (df_new["dropoff"] - df_new["pickup"]).dt.total_seconds() / 86400
-    df_new["weekend_pickup"] = df_new["pickup"].dt.dayofweek.isin([4, 5, 6])
-    df_new["winter_pickup"] = df_new["pickup"].dt.month.isin([1, 12])
-    df_new.replace({"Yes": 1, "No": 0, True: 1, False: 0}, inplace=True)
-    df_new = df_new[C.FEATURES_TO_KEEP]
-    X = model.pipeline.scaler.transform(df_new)
+    X = model.pipeline.transform_individual(df_new)
     probability = model.classifier.predict_proba(X)[0, 1]
     prediction = "Cancelled Ride" if probability > C.THRESHOLD else "Finished Ride"
-    price = df_new["trip_duration"].iloc[0] * 50
-    d = {
-        "probability": "{:,.2f}".format(probability),
-        "prediction": prediction,
-        "price": "${:,.0f}".format(price)
-    }
-    return jsonify(d)
+    return jsonify(
+        {"probability": "{:,.2f}".format(probability),
+        "prediction": prediction}
+    )
 
 
 if __name__ == '__main__':

@@ -33,3 +33,7 @@ USERS = (
     "LEFT JOIN user_profile p ON u.id = p.user_id "
     "LEFT JOIN credit_cards c ON p.id = c.user_profile_id;"
 )
+
+GET_TIME_ZONE = (
+    "SELECT time_zone FROM locations WHERE name = '{}'"
+)

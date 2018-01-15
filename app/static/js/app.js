@@ -43,7 +43,6 @@ $( ".form-input" ).change(function () {
     success: function(data) {
       $('.probability').text("Probability: " + data.probability);
       $('.prediction').text("Prediction: " + data.prediction);
-      $('.price').text("Price: " + data.price);
     }
   });
 })
