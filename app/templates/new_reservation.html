@@ -11,19 +11,25 @@
 		<a href="{{ url_for('index') }}">Home</a>
         <h1>New Reservation</h1>
 		<div>
-			<p>Probability: </p>
-        	<p>Prediction: </p>
-			<p>Price: </p>
+			<p class="probability">Probability:</p>
+        	<p class="prediction">Prediction:</p>
+			<p class="price">Price:</p>
 		</div>
         <div>
             <form class="form-new-reservation">
                 <fieldset>
-					Reservation Created:<input class="form-input" type="date" name="created">
-					Pick-up:<input class="form-input" type="date" name="pickup">
-					Drop-off:<input class="form-input" type="date" name="dropoff">
+					Location:<select class="form-input" name="select">
+						{% for location in locations %}
+						<option value="{{ location }}">{{ location }}</option>
+						{% endfor %}
+					</select>
 
-					Past Ride Count:<input class="form-input" type="number" name="total_count" value="0">
-					Past Ride Cancellations:<input class="form-input" type="number" name="cancel_count" value="0">
+					Reservation Created:<input class="form-input" type="date" name="created" value="2018-01-01">
+					Pick-up:<input class="form-input" type="date" name="pickup" value="2018-01-02">
+					Drop-off:<input class="form-input" type="date" name="dropoff" value="2018-01-03">
+
+					Past Ride Count:<input class="form-input" type="number" name="ride-count" min=0 value="0">
+					Past Ride Cancellations:<input class="form-input" type="number" name="cancel-count" min=0 value="0">
 
 					<label class="form-label">Insurance</label>
 					Personal<input class="form-input" type="radio" name="insurance" value="Personal">
@@ -44,8 +50,8 @@
 					No<input class="form-input" type="radio" name="guest" value="No" checked>
 
 					<label class="form-label">Local Rental?</label>
-					Yes<input class="form-input" type="radio" name="local-rental" value="Yes">
-					No<input class="form-input" type="radio" name="local-rental" value="No" checked>
+					Yes<input class="form-input" type="radio" name="local" value="Yes">
+					No<input class="form-input" type="radio" name="local" value="No" checked>
 
 					<label class="form-label">Reservation Referral Bonus?</label>
 					Yes<input class="form-input" type="radio" name="referral-bonus" value="Yes">
@@ -55,21 +61,9 @@
 					Yes<input class="form-input" type="radio" name="referred" value="Yes">
 					No<input class="form-input" type="radio" name="referred" value="No" checked>
 
-					<label class="form-label">Weekend Pickup?</label>
-					Yes<input class="form-input" type="radio" name="weekend" value="Yes">
-					No<input class="form-input" type="radio" name="weekend" value="No" checked>
-
-					<label class="form-label">Winter Pickup?</label>
-					Yes<input class="form-input" type="radio" name="winter" value="Yes">
-					No<input class="form-input" type="radio" name="winter" value="No" checked>
-
-					<label class="form-label">Western Pickup?</label>
-					Yes<input class="form-input" type="radio" name="western" value="Yes">
-					No<input class="form-input" type="radio" name="western" value="No" checked>
-
 					<label class="form-label">GDS User?</label>
-					Yes<input class="form-input" type="radio" name="gds-user" value="Yes">
-					No<input class="form-input" type="radio" name="gds-user" value="No" checked>
+					Yes<input class="form-input" type="radio" name="gds" value="Yes">
+					No<input class="form-input" type="radio" name="gds" value="No" checked>
 
 					<label class="form-label">Web Booking?</label>
 					Yes<input class="form-input" type="radio" name="web" value="Yes">
@@ -81,5 +75,8 @@
 				</fieldset>
             </form>
         </div>
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script>var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
+		<script src="{{ url_for('static', filename='js/app.js') }}"></script>
 	</body>
 </html>

@@ -10,13 +10,13 @@
         <h1 class="header">All Reservations</h1>
         <div>
             <div>
-                <select class="select-location" name="select">
+                <select id="select" class="select-location" name="select">
                     <option value="All">All Locations</option>
                     {% for location in locations %}
                     <option value="{{ location }}">{{ location }}</option>
                     {% endfor %}
                 </select>
-                <select class="select-month" name="select">
+                <select id="select" class="select-month" name="select">
                     <option value="All">All Months</option>
                     {% for month in months %}
                     <option value="{{ month }}">{{ month }}</option>
@@ -33,8 +33,8 @@
         <div class="data">
             {{ data | safe }}
         </div>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script>var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
-    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script>var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
+        <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 	</body>
 </html>
