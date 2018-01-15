@@ -51,7 +51,7 @@ def get_data(engine, booked=False):
     df_reservations = pd.read_sql_query(C.BOOKED_RESERVATIONS if booked else C.PAST_RESERVATIONS, con=engine)
     df_users = pd.read_sql_query(C.USERS, con=engine).set_index("id")
     df_users = df_users[~df_users.index.duplicated(keep='first')]
-    return df_reservations.join(df_users, on="user_id", how="left")
+    return df_reservations.join(df_users, on="user_id", how="left").sort_values("pickup")
 
 
 def create_booked_table(engine, df, model):
@@ -64,7 +64,7 @@ def create_booked_table(engine, df, model):
     df["dropoff"] = pd.to_datetime('1899-12-30') + pd.to_timedelta(df["dropoff"], 'D')
     df["month"] = df["pickup"].dt.strftime('%B, %Y')
     df["price"] = 50 * ((df["dropoff"] - df["pickup"]).dt.total_seconds() / 86400)
-    df.sort_values("pickup").to_sql("booked", engine, if_exists="replace", index=False)
+    df.to_sql("booked", engine, if_exists="replace", index=False)
 
 
 if __name__ == '__main__':

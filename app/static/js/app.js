@@ -3,8 +3,8 @@ $( "select.select" ).change(function () {
     type: "GET",
     url: $SCRIPT_ROOT + "/get_df_subset/",
     contentType: "application/json; charset=utf-8",
-    data: { location: $( "select.select-location option:selected" ).val(),
-            month: $( "select.select-month option:selected" ).val() },
+    data: { location: $( "#select-location option:selected" ).val(),
+            month: $( "#select-month option:selected" ).val() },
     success: function(data) {
       $('.header').text(data.location + " Reservations");
       $('.total-count').text("Current Reservations: " + data.total_count);

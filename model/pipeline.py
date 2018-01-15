@@ -2,6 +2,8 @@ import pandas as pd
 from collections import defaultdict
 from sklearn.preprocessing import StandardScaler
 from sqlalchemy import create_engine
+import geocoder
+import geopy
 
 import constants as C
 
@@ -45,9 +47,9 @@ class Pipeline:
         """
         Make all of the requisite changes to the DataFrame
         """
+        df = self._create_historical_features(df, y)
         df = self._create_date_features(df)
         df = self._create_binary_features(df)
-        df = self._create_historical_features(df, y)
         df = self._filter_data(df)
         return self.scaler.fit_transform(df) if y is not None else self.scaler.transform(df)
 
@@ -102,7 +104,6 @@ class Pipeline:
         """
         Create all features related to user ride history
         """
-        df.sort_values("pickup", inplace=True)
         df["rides"] = self._get_past_ride_cnt(df, y)
         df["past_rides"] = df["rides"].apply(lambda lst: len(lst))
         df["past_cancellations"] = df["rides"].apply(lambda lst: sum(lst))

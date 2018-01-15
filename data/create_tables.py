@@ -17,12 +17,14 @@ def write_zips_to_sql():
 def write_csvs_to_sql(f):
     df = pd.read_csv(f, encoding="ISO-8859-1")
     table_name = f.split(".")[0]
+    if table_name == "reservations":
+        df.sort_values("pickup", inplace=True)
     df.to_sql(table_name, engine, if_exists="replace")
 
 
 if __name__ == '__main__':
     engine = create_engine(C.ENGINE)
     for f in os.listdir('.'):
-        if (f.endswith(".csv")) & (f != "CCI.csv"):
+        if f.endswith(".csv"):
             write_csvs_to_sql(f)
     write_zips_to_sql()

@@ -10,13 +10,13 @@
         <h1 class="header">All Reservations</h1>
         <div>
             <div>
-                <select id="select" class="select-location" name="select">
+                <select id="select-location" class="select" name="select">
                     <option value="All">All Locations</option>
                     {% for location in locations %}
                     <option value="{{ location }}">{{ location }}</option>
                     {% endfor %}
                 </select>
-                <select id="select" class="select-month" name="select">
+                <select id="select-month" class="select" name="select">
                     <option value="All">All Months</option>
                     {% for month in months %}
                     <option value="{{ month }}">{{ month }}</option>
