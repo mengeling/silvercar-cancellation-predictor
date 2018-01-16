@@ -1,5 +1,5 @@
 import pandas as pd
-import pickle
+import dill
 from sqlalchemy import create_engine
 from sklearn.metrics import accuracy_score
 from sklearn.linear_model import LogisticRegression
@@ -62,5 +62,5 @@ if __name__ == '__main__':
     model = CancellationModel(LogisticRegression())
     model.fit(df, y)
     with open('model.pkl', 'wb') as f:
-        pickle.dump(model, f)
+        dill.dump(model, f)
 

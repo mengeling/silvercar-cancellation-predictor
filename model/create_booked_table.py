@@ -1,5 +1,5 @@
 import pandas as pd
-import pickle
+import dill
 from sqlalchemy import create_engine
 
 import constants as C
@@ -21,7 +21,7 @@ def create_booked_table(engine, df, model):
 
 if __name__ == '__main__':
     with open('model.pkl', 'rb') as f:
-        model = pickle.load(f)
+        model = dill.load(f)
     engine = create_engine(C.ENGINE)
     df = get_data(engine, booked=True)
     create_booked_table(engine, df, model)
