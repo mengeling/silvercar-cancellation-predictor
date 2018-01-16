@@ -2,8 +2,6 @@ import pandas as pd
 from collections import defaultdict
 from sklearn.preprocessing import StandardScaler
 from sqlalchemy import create_engine
-import geocoder
-import geopy
 
 import constants as C
 
