@@ -26,8 +26,8 @@ BOOKED_RESERVATIONS = (
 )
 
 USERS = (
-    "SELECT u.id, u.is_gds_user, u.referral_code, i.insurance_corporate, i.insurance_personal, "
-    "i.insurance_silvercar, c.postal_code "
+    "SELECT u.id, u.is_gds_user, u.referral_code, u.created_at, u.updated_at, "
+    "i.insurance_corporate, i.insurance_personal, i.insurance_silvercar, c.postal_code "
     "FROM users u "
     "LEFT JOIN insurance i ON u.id = i.user_id "
     "LEFT JOIN user_profile p ON u.id = p.user_id "

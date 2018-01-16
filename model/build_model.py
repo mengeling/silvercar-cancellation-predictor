@@ -51,7 +51,7 @@ def get_data(engine, booked=False):
     df_reservations = pd.read_sql_query(C.BOOKED_RESERVATIONS if booked else C.PAST_RESERVATIONS, con=engine)
     df_users = pd.read_sql_query(C.USERS, con=engine).set_index("id")
     df_users = df_users[~df_users.index.duplicated(keep='first')]
-    return df_reservations.join(df_users, on="user_id", how="left").sort_values("pickup")
+    return df_reservations.join(df_users, on="user_id", how="left", rsuffix="_user").sort_values("pickup")
 
 
 if __name__ == '__main__':

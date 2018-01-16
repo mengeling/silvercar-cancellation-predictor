@@ -94,7 +94,7 @@ class Pipeline:
         df["used_referral"] = df["referral_code"].notnull().astype(int)
         df["credit_card"] = df["postal_code"].notnull().astype(int)
         df["web_booking"] = df["booking_application"].isin(C.WEB_APPS).astype(int)
-        df["new_customer"] = (df["reservation_frequency"] != "repeat_customer").astype(int)
+        df["new_customer"] = (df["reservation_frequency"] == "new_customer").astype(int)
         df["western_pickup"] = ((df["time_zone"] == "pst") | (df["time_zone"] == "mst")).astype(int)
         return df
 
