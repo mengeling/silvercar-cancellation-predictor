@@ -6,7 +6,6 @@ import sys
 from sqlalchemy import create_engine
 
 sys.path.append('../model')
-from build_model import CancellationModel
 import constants as C
 
 app = Flask(__name__)
