@@ -59,6 +59,7 @@ if __name__ == '__main__':
     df = get_data(engine)
     df["current_state"] = ((df["current_state"] != "finished") & (df["current_state"] != "started")).astype(int)
     y = df.pop("current_state").values
+    from build_model import CancellationModel
     model = CancellationModel(LogisticRegression())
     model.fit(df, y)
     with open('model.pkl', 'wb') as f:
