@@ -20,7 +20,7 @@ def create_booked_table(engine, df, model):
 
 
 if __name__ == '__main__':
-    with open('model.pkl', 'rb') as f:
+    with open('../app/model.pkl', 'rb') as f:
         model = pickle.load(f)
     engine = create_engine(C.ENGINE)
     df = get_data(engine, booked=True)

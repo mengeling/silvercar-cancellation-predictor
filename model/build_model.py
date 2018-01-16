@@ -61,6 +61,6 @@ if __name__ == '__main__':
     y = df.pop("current_state").values
     model = CancellationModel(LogisticRegression())
     model.fit(df, y)
-    with open('model.pkl', 'wb') as f:
+    with open('../app/model.pkl', 'wb') as f:
         pickle.dump(model, f)
 
