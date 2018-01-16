@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, jsonify
-import dill
+import pickle
 import numpy as np
 import pandas as pd
 import sys
@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 # Load model from pickle file and then retrieve the booked data
 with open('../model/model.pkl', 'rb') as f:
-    model = dill.load(f)
+    model = pickle.load(f)
 engine = create_engine(C.ENGINE)
 df = pd.read_sql_query("SELECT * FROM booked", con=engine).sort_values("pickup")
 
