@@ -3,7 +3,7 @@ import pickle
 from sqlalchemy import create_engine
 
 import constants as C
-from model import get_data
+from build_model import get_data, CancellationModel
 
 
 def create_booked_table(engine, df, model):
