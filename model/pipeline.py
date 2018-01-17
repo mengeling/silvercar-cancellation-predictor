@@ -56,7 +56,7 @@ class Pipeline:
         Create all date-related features needed for the model
         """
         df = self._change_datetimes(df, individual, "pickup", "dropoff", "created_at")
-        df = self._calculate_time_between(df,
+        df = self._calculate_time_between(df, individual,
                                           days_to_pickup=("pickup", "created_at"),
                                           trip_duration=("dropoff", "pickup"))
         df["weekend_pickup"] = df["pickup"].dt.dayofweek.isin([4, 5, 6]).astype(int)
@@ -68,21 +68,23 @@ class Pipeline:
         """
         Change timestamp columns from numbers to datetimes
         """
-        if individual:
-            for col_name in args:
+        for col_name in args:
+            if individual:
                 df[col_name] = pd.to_datetime(df[col_name])
-        else:
-            for col_name in args:
+            else:
                 df[col_name] = pd.to_datetime('1899-12-30') + pd.to_timedelta(df[col_name], 'D')
         return df
 
     @staticmethod
-    def _calculate_time_between(df, **kwargs):
+    def _calculate_time_between(df, individual, **kwargs):
         """
         Calculate the number of days between two datetime features
         """
         for k, (v1, v2) in kwargs.items():
-            df[k] = (df[v1] - df[v2]).dt.total_seconds() / 86400
+            if individual:
+                df[k] = 0 if df[v1].values < df[v2].values else (df[v1] - df[v2]).dt.total_seconds() / 86400
+            else:
+                df[k] = (df[v1] - df[v2]).dt.total_seconds() / 86400
         return df
 
     @staticmethod

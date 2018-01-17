@@ -19,8 +19,6 @@ $( "select.select" ).change(function () {
 
 
 $( ".form-input" ).change(function () {
-  var data =
-  console.log( data );
   $.ajax({
     type: "GET",
     url: $SCRIPT_ROOT + "/calculate_probability/",
@@ -47,5 +45,14 @@ $( ".form-input" ).change(function () {
       $('.price').text("Price: " + data.price);
     }
   });
+})
+.change();
+
+
+$( "input[type='number']" ).change(function () {
+  var min = $( "input[name='cancel-count']" ).val();
+  if ( $( "input[name='ride-count']" ).val() < min ) {
+    $( "input[name='ride-count']" ).val(min)
+  }
 })
 .change();

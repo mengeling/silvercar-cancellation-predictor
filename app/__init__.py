@@ -72,7 +72,9 @@ def calculate_probability():
     X = model.pipeline.transform_individual(df_new)
     probability = model.classifier.predict_proba(X)[0, 1]
     prediction = "Cancelled Ride" if probability > C.THRESHOLD else "Finished Ride"
-    price = int(50 * (pd.to_datetime(df_new["dropoff"]) - pd.to_datetime(df_new["pickup"])).dt.total_seconds() / 86400)
+    price = 0 if df_new["dropoff"].values < df_new["pickup"].values else int(
+        50 * (pd.to_datetime(df_new["dropoff"]) - pd.to_datetime(df_new["pickup"])).dt.total_seconds() / 86400
+    )
     return jsonify({
         "probability": "{:,.2f}".format(probability),
         "prediction": prediction,
