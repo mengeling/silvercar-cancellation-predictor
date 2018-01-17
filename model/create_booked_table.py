@@ -16,7 +16,7 @@ def create_booked_table(engine, df, model):
     df["dropoff"] = pd.to_datetime('1899-12-30') + pd.to_timedelta(df["dropoff"], 'D')
     df["month"] = df["pickup"].dt.strftime('%B, %Y')
     df["price"] = 50 * ((df["dropoff"] - df["pickup"]).dt.total_seconds() / 86400)
-    df.to_sql("booked", engine, if_exists="replace", index=False)
+    df.sample(200).to_sql("booked", engine, if_exists="replace", index=False)
 
 
 if __name__ == '__main__':

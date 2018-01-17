@@ -9,6 +9,7 @@ $( "select.select" ).change(function () {
       $('.header').text(data.location + " Reservations");
       $('.total-count').text("Current Reservations: " + data.total_count);
       $('.cancel_count').text("Predicted Cancellations: " + data.cancel_count);
+      $('.percent_cancelled').text("Predicted Percent Cancelled: " + data.percent_cancelled);
       $('.revenue').text("Predicted Revenue: " + data.revenue);
       $('.data').html(data.data);
     }
@@ -43,6 +44,7 @@ $( ".form-input" ).change(function () {
     success: function(data) {
       $('.probability').text("Probability: " + data.probability);
       $('.prediction').text("Prediction: " + data.prediction);
+      $('.price').text("Price: " + data.price);
     }
   });
 })

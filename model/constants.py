@@ -14,7 +14,7 @@ PAST_RESERVATIONS = (
     "r.pickup, r.dropoff, r.created_at, r.promo_code_id, r.booking_application, r.reservation_frequency, l.time_zone "
     "FROM reservations r "
     "LEFT JOIN locations l ON r.pickup_location_id = l.id "
-    "WHERE current_state != 'booked' AND current_state != 'pending_agreement';"
+    "WHERE r.current_state != 'booked' AND r.current_state != 'pending_agreement';"
 )
 
 BOOKED_RESERVATIONS = (
@@ -22,7 +22,7 @@ BOOKED_RESERVATIONS = (
     "r.created_at, r.promo_code_id, r.booking_application, r.reservation_frequency, l.time_zone, l.name "
     "FROM reservations r "
     "LEFT JOIN locations l ON r.pickup_location_id = l.id "
-    "WHERE current_state = 'booked';"
+    "WHERE r.current_state = 'booked'"
 )
 
 USERS = (
