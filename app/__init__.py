@@ -73,7 +73,6 @@ def calculate_probability():
     probability = model.classifier.predict_proba(X)[0, 1]
     prediction = "Cancelled Ride" if probability > C.THRESHOLD else "Finished Ride"
     price = int(50 * (pd.to_datetime(df_new["dropoff"]) - pd.to_datetime(df_new["pickup"])).dt.total_seconds() / 86400)
-    print(price)
     return jsonify({
         "probability": "{:,.2f}".format(probability),
         "prediction": prediction,
