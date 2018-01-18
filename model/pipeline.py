@@ -104,7 +104,7 @@ class Pipeline:
         df["credit_card"] = df["postal_code"].notnull().astype(int)
         df["web_booking"] = (df["booking_application"] == "web").astype(int)
         df["western_pickup"] = ((df["time_zone"] == "pst") | (df["time_zone"] == "mst")).astype(int)
-        df["modified_profile"] = (df["updated_at"].dt.date > df["created_at_user"].dt.date)
+        df["modified_profile"] = (df["updated_at"].dt.date > df["created_at_user"].dt.date).astype(int)
         return df
 
     def _create_historical_features(self, df, y):

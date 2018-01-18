@@ -10,12 +10,6 @@ import constants as C
 
 app = Flask(__name__)
 
-# Load model from pickle file and then retrieve the booked data
-with open('../model/model.pkl', 'rb') as f:
-    model = pickle.load(f)
-engine = create_engine(C.ENGINE)
-df = pd.read_sql_query("SELECT * FROM booked", con=engine)
-
 
 @app.route('/')
 def index():
@@ -23,12 +17,13 @@ def index():
     Renders index.html template for the main page of the app, using entire booked DataFrame
     """
     total_count = df.shape[0]
-    cancel_count = df["prediction"].sum()
+    cancellations = df["Cancellation Probability"] > C.THRESHOLD
+    cancel_count = np.sum(cancellations.astype(int))
     return render_template(
-        'index.html', data=df.to_html(index=False), locations=np.sort(df["name"].unique()),
-        months=df["month"].unique(), revenue="${:,}".format(int(df[df["prediction"] == 0]["price"].sum())),
-        total_count="{:,}".format(total_count), cancel_count="{:,}".format(cancel_count),
-        percent_cancelled="{:,.0f}%".format(100 * cancel_count / total_count)
+        'index.html', data=df.drop(["month", "name"], axis=1).to_html(index=False),
+        locations=np.sort(df["name"].unique()), months=df["month"].unique(),
+        revenue="${:,}".format(int(df[~cancellations]["Price"].sum())), total_count="{:,}".format(total_count),
+        cancel_count="{:,}".format(cancel_count), percent_cancelled="{:,.0f}%".format(100 * cancel_count / total_count)
     )
 
 
@@ -51,14 +46,15 @@ def get_df_subset():
         df_subset = df if location == "All" else df[df["name"] == location]
         df_subset = df_subset if month == "All" else df_subset[df_subset["month"] == month]
         total_count = df_subset.shape[0]
-        cancel_count = df_subset["prediction"].sum()
+        cancellations = df_subset["Cancellation Probability"] > C.THRESHOLD
+        cancel_count = np.sum(cancellations.astype(int))
         return jsonify({
                 "location": location,
                 "total_count": "{:,}".format(total_count),
                 "cancel_count": "{:,}".format(cancel_count),
                 "percent_cancelled":  "{:,.0f}%".format(100 * cancel_count / total_count),
-                "revenue": "${:,.0f}".format(df_subset[df_subset["prediction"] == 0]["price"].sum()),
-                "data": df_subset.to_html(index=False)
+                "revenue": "${:,.0f}".format(df_subset[cancellations]["Price"].sum()),
+                "data": df_subset.drop(["month", "name"], axis=1).to_html(index=False)
         })
 
 
@@ -83,4 +79,11 @@ def calculate_probability():
 
 
 if __name__ == '__main__':
+    # Load model from pickle file and then retrieve the booked data
+    with open('../model/model.pkl', 'rb') as f:
+        model = pickle.load(f)
+    engine = create_engine(C.ENGINE)
+    df = pd.read_sql_query("SELECT * FROM booked", con=engine)
+    df.sort_values("probability", inplace=True, ascending=False)
+    df.rename(index=str, columns=C.APP_COL_NAMES, inplace=True)
     app.run(debug=True)
