@@ -1,20 +1,19 @@
 THRESHOLD = 0.5
 
-WEB_APPS = ["web", "web-desktop", "web-mobile", "web-tablet"]
-
-FEATURES_TO_KEEP = ["created_as_guest", "local_rental", "awards_referral_bonus", "is_gds_user", "insurance_corporate",
-                    "insurance_personal", "insurance_silvercar", "days_to_pickup", "trip_duration", "weekend_pickup",
-                    "winter_pickup", "used_promo", "used_referral", "credit_card", "web_booking", "new_customer",
-                    "western_pickup", "past_rides", "past_cancellations", "past_percent_cancelled"]
-
 ENGINE = "postgresql://mengeling:mengeling@localhost:5432/silvercar"
+
+FEATURES_TO_KEEP = ["local_rental", "awards_referral_bonus", "insurance_corporate", "insurance_silvercar",
+                    "days_to_pickup", "trip_duration", "weekend_pickup", "winter_pickup", "used_promo",
+                    "used_referral", "credit_card", "web_booking", "western_pickup", "past_rides",
+                    "past_cancellations", "past_percent_cancelled", "pickup_dow", "modified_profile"]
 
 PAST_RESERVATIONS = (
     "SELECT r.user_id, r.current_state, r.created_as_guest, r.local_rental, r.awards_referral_bonus, "
     "r.pickup, r.dropoff, r.created_at, r.promo_code_id, r.booking_application, r.reservation_frequency, l.time_zone "
     "FROM reservations r "
     "LEFT JOIN locations l ON r.pickup_location_id = l.id "
-    "WHERE r.current_state != 'booked' AND r.current_state != 'pending_agreement';"
+    "WHERE r.current_state != 'booked' AND r.current_state != 'pending_agreement' "
+    "ORDER BY r.pickup ASC;"
 )
 
 BOOKED_RESERVATIONS = (
@@ -22,7 +21,9 @@ BOOKED_RESERVATIONS = (
     "r.created_at, r.promo_code_id, r.booking_application, r.reservation_frequency, l.time_zone, l.name "
     "FROM reservations r "
     "LEFT JOIN locations l ON r.pickup_location_id = l.id "
-    "WHERE r.current_state = 'booked'"
+    "WHERE r.current_state != 'booked' AND r.current_state != 'pending_agreement' "
+    "AND r.pickup >= 41640 AND r.pickup < 41821 "
+    "ORDER BY r.pickup ASC;"
 )
 
 USERS = (

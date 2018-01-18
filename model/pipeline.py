@@ -34,7 +34,7 @@ class Pipeline:
         """
         df = df.apply(pd.to_numeric, errors='ignore')
         df = self._create_date_features(df, individual=True)
-        df = self._create_insurance_features(df, "Corporate", "Personal", "Silvercar")
+        df = self._create_insurance_features(df, "Corporate", "Silvercar")
         df = self._calculate_percent_cancelled(df)
         df = self._create_western_binary(df)
         df.replace({"Yes": 1, "No": 0, True: 1, False: 0}, inplace=True)
@@ -55,11 +55,12 @@ class Pipeline:
         """
         Create all date-related features needed for the model
         """
-        df = self._change_datetimes(df, individual, "pickup", "dropoff", "created_at")
+        df = self._change_datetimes(df, individual, "pickup", "dropoff", "created_at", "updated_at", "created_at_user")
         df = self._calculate_time_between(df, individual,
                                           days_to_pickup=("pickup", "created_at"),
                                           trip_duration=("dropoff", "pickup"))
-        df["weekend_pickup"] = df["pickup"].dt.dayofweek.isin([4, 5, 6]).astype(int)
+        df["pickup_dow"] = df["pickup"].dt.dayofweek
+        df["weekend_pickup"] = df["pickup_dow"].isin([4, 5, 6]).astype(int)
         df["winter_pickup"] = df["pickup"].dt.month.isin([1, 12]).astype(int)
         return df
 
@@ -70,6 +71,8 @@ class Pipeline:
         """
         for col_name in args:
             if individual:
+                if col_name == "updated_at" or col_name == "created_at_user":
+                    continue
                 df[col_name] = pd.to_datetime(df[col_name])
             else:
                 df[col_name] = pd.to_datetime('1899-12-30') + pd.to_timedelta(df[col_name], 'D')
@@ -95,9 +98,9 @@ class Pipeline:
         df["used_promo"] = df["promo_code_id"].notnull().astype(int)
         df["used_referral"] = df["referral_code"].notnull().astype(int)
         df["credit_card"] = df["postal_code"].notnull().astype(int)
-        df["web_booking"] = df["booking_application"].isin(C.WEB_APPS).astype(int)
-        df["new_customer"] = (df["reservation_frequency"] == "new_customer").astype(int)
+        df["web_booking"] = (df["booking_application"] == "web").astype(int)
         df["western_pickup"] = ((df["time_zone"] == "pst") | (df["time_zone"] == "mst")).astype(int)
+        df["modified_profile"] = (df["updated_at"].dt.date > df["created_at_user"].dt.date)
         return df
 
     def _create_historical_features(self, df, y):
