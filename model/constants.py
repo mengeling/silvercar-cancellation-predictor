@@ -5,7 +5,12 @@ ENGINE = "postgresql://mengeling:mengeling@localhost:5432/silvercar"
 FEATURES_TO_KEEP = ["local_rental", "awards_referral_bonus", "insurance_corporate", "insurance_silvercar",
                     "days_to_pickup", "trip_duration", "weekend_pickup", "winter_pickup", "used_promo",
                     "used_referral", "credit_card", "web_booking", "western_pickup", "past_rides",
-                    "past_cancellations", "past_percent_cancelled", "pickup_dow", "modified_profile"]
+                    "past_cancellations", "past_percent_cancelled", "pickup_dow", "modified_profile", "is_gds_user"]
+
+APP_FEATURES_TO_KEEP = ["user_id", "price", "name", "created_at", "pickup", "dropoff", "insurance", "past_rides",
+                        "past_cancellations", "credit_card", "awards_referral_bonus", "used_promo",
+                        "used_referral", "modified_profile", "is_gds_user", "local_rental", "web_booking",
+                        "probability", "prediction", "month"]
 
 PAST_RESERVATIONS = (
     "SELECT r.user_id, r.current_state, r.created_as_guest, r.local_rental, r.awards_referral_bonus, "

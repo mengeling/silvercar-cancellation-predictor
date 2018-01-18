@@ -8,18 +8,18 @@
 	</head>
 
 	<body>
-		<a href="{{ url_for('index') }}">Home</a>
+		<a class="button" href="{{ url_for('index') }}">Home</a>
         <h1>New Reservation</h1>
-		<div class="summary-stats-container">
-			<div class="summary-stats">
+		<div class="summary-stats-container-new">
+			<div class="summary-stats-new">
 				<h3>Probability:</h3>
 				<p class="probability"></p>
 			</div>
-			<div class="summary-stats">
+			<div class="summary-stats-new">
 				<h3>Prediction:</h3>
 				<p class="prediction"></p>
 			</div>
-			<div class="summary-stats">
+			<div class="summary-stats-new">
 				<h3>Price:</h3>
 				<p class="price"></p>
 			</div>
@@ -64,7 +64,7 @@
 									<label class="radio-label">Used Promo?</label>
 								</div>
 								<div class="label-container">
-									<label class="radio-label">Profile Modified?</label>
+									<label class="radio-label">Modified Profile?</label>
 								</div>
 								<div class="label-container">
 									<label class="radio-label">Local Rental?</label>

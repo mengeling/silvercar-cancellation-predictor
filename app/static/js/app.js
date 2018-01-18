@@ -7,15 +7,14 @@ $( "select.select" ).change(function () {
             month: $( "#select-month option:selected" ).val() },
     success: function(data) {
       $('.header').text(data.location + " Reservations");
-      $('.total-count').text("Current Reservations:\n" + data.total_count);
-      $('.cancel_count').text("Predicted Cancellations:\n" + data.cancel_count);
-      $('.percent_cancelled').text("Predicted Percent Cancelled:\n" + data.percent_cancelled);
-      $('.revenue').text("Predicted Revenue:\n" + data.revenue);
+      $('.total-count').text(data.total_count);
+      $('.cancel-count').text(data.cancel_count);
+      $('.percent-cancelled').text(data.percent_cancelled);
+      $('.revenue').text(data.revenue);
       $('.data').html(data.data);
     }
   });
 })
-.change();
 
 
 $( ".form-input" ).change(function () {

@@ -7,9 +7,10 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
 	</head>
 	<body>
+        <a class="button" href="{{ url_for('new_reservation') }}">Create New Reservation</a>
         <h1 class="header">All Reservations</h1>
         <div>
-            <div>
+            <div class="select-container">
                 <select id="select-location" class="select" name="select">
                     <option value="All">All Locations</option>
                     {% for location in locations %}
@@ -23,13 +24,24 @@
                     {% endfor %}
                 </select>
             </div>
-            <div>
-                <p class="total-count">Current Reservations: {{ total_count }}</p>
-                <p class="cancel_count">Predicted Cancellations: {{ cancel_count }}</p>
-                <p class="percent_cancelled">Predicted Percent Cancelled: {{ percent_cancelled }}</p>
-                <p class="revenue">Predicted Revenue: {{ revenue }}</p>
+            <div class="summary-stats-container-index">
+                <div class="summary-stats-index">
+                    <h3>Current</br>Reservations:</h3>
+                    <p class="total-count">{{ total_count }}</p>
+                </div>
+                <div class="summary-stats-index">
+                    <h3>Predicted</br>Cancellations:</h3>
+                    <p class="cancel-count">{{ cancel_count }}</p>
+                </div>
+                <div class="summary-stats-index">
+                    <h3>Percent</br>Cancelled:</h3>
+                    <p class="percent-cancelled">{{ percent_cancelled }}</p>
+                </div>
+                <div class="summary-stats-index">
+                    <h3>Predicted</br>Revenue:</h3>
+                    <p class="revenue">{{ revenue }}</p>
+                </div>
             </div>
-            <a class="new-reservation-button" href="{{ url_for('new_reservation') }}">Create New Reservation</a>
         </div>
         <div class="data">
             {{ data | safe }}
