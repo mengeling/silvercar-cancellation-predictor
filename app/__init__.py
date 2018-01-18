@@ -10,6 +10,14 @@ import constants as C
 
 app = Flask(__name__)
 
+# Load model from pickle file and then retrieve the booked data
+with open('../model/model.pkl', 'rb') as f:
+    model = pickle.load(f)
+engine = create_engine(C.ENGINE)
+df = pd.read_sql_query("SELECT * FROM booked", con=engine)
+df.sort_values("probability", inplace=True, ascending=False)
+df.rename(index=str, columns=C.APP_COL_NAMES, inplace=True)
+
 
 @app.route('/')
 def index():
@@ -79,11 +87,4 @@ def calculate_probability():
 
 
 if __name__ == '__main__':
-    # Load model from pickle file and then retrieve the booked data
-    with open('../model/model.pkl', 'rb') as f:
-        model = pickle.load(f)
-    engine = create_engine(C.ENGINE)
-    df = pd.read_sql_query("SELECT * FROM booked", con=engine)
-    df.sort_values("probability", inplace=True, ascending=False)
-    df.rename(index=str, columns=C.APP_COL_NAMES, inplace=True)
     app.run(debug=True)
