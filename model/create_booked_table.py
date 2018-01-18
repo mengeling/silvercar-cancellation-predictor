@@ -33,7 +33,7 @@ def insurance_mapping(row):
         return "Personal"
     elif row["insurance_silvercar"]:
         return "Silvercar"
-    return None
+    return "NA"
 
 
 def convert_datetimes_to_strings(df, *args):
