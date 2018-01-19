@@ -38,7 +38,7 @@ class Pipeline:
         df = self._calculate_percent_cancelled(df)
         df = self._create_western_binary(df)
         df.replace({"Yes": 1, "No": 0, True: 1, False: 0}, inplace=True)
-        return self.scaler.transform(df[C.FEATURES_TO_KEEP])
+        return self.scaler.transform(df[C.MODEL_FEATURES_TO_KEEP])
 
     def _run_pipeline(self, df, y=None):
         """
@@ -49,10 +49,10 @@ class Pipeline:
         df = self._create_binary_features(df)
         df.fillna(0, inplace=True)
         if y is not None:
-            X = self.scaler.fit_transform(df.copy()[C.FEATURES_TO_KEEP])
+            X = self.scaler.fit_transform(df.copy()[C.MODEL_FEATURES_TO_KEEP])
             return df, X
         else:
-            X = self.scaler.transform(df.copy()[C.FEATURES_TO_KEEP])
+            X = self.scaler.transform(df.copy()[C.MODEL_FEATURES_TO_KEEP])
             return df, X
 
     def _create_date_features(self, df, individual=False):
@@ -166,4 +166,4 @@ class Pipeline:
         """
         Filter out unnecessary columns and fill nulls
         """
-        return df[C.FEATURES_TO_KEEP].fillna(0)
+        return df[C.MODEL_FEATURES_TO_KEEP].fillna(0)

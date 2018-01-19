@@ -30,7 +30,7 @@ def index():
     return render_template(
         'index.html', data=df.drop(["month", "name"], axis=1).to_html(index=False),
         locations=np.sort(df["name"].unique()), months=df["month"].unique(),
-        revenue="${:,}".format(int(df[~cancellations]["Price"].sum())), total_count="{:,}".format(total_count),
+        revenue="${:,}".format(int(df[~cancellations]["Price ($)"].sum())), total_count="{:,}".format(total_count),
         cancel_count="{:,}".format(cancel_count), percent_cancelled="{:,.0f}%".format(100 * cancel_count / total_count)
     )
 
@@ -61,7 +61,7 @@ def get_df_subset():
                 "total_count": "{:,}".format(total_count),
                 "cancel_count": "{:,}".format(cancel_count),
                 "percent_cancelled":  "{:,.0f}%".format(100 * cancel_count / total_count),
-                "revenue": "${:,.0f}".format(df_subset[cancellations]["Price"].sum()),
+                "revenue": "${:,.0f}".format(df_subset[cancellations]["Price ($)"].sum()),
                 "data": df_subset.drop(["month", "name"], axis=1).to_html(index=False)
         })
 

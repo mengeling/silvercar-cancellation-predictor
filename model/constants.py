@@ -4,13 +4,13 @@ THRESHOLD = 0.5
 ENGINE = "postgresql://mengeling:mengeling@localhost:5432/silvercar"
 
 
-FEATURES_TO_KEEP = ["local_rental", "awards_referral_bonus", "insurance_corporate", "insurance_silvercar",
-                    "days_to_pickup", "trip_duration", "weekend_pickup", "winter_pickup", "used_promo",
-                    "used_referral", "credit_card", "web_booking", "western_pickup", "past_rides",
-                    "past_cancellations", "past_percent_cancelled", "pickup_dow", "modified_profile", "is_gds_user"]
+MODEL_FEATURES_TO_KEEP = ["local_rental", "awards_referral_bonus", "insurance_corporate", "insurance_silvercar",
+                          "days_to_pickup", "trip_duration", "weekend_pickup", "winter_pickup", "used_promo",
+                          "used_referral", "credit_card", "web_booking", "western_pickup", "past_rides", "pickup_dow",
+                          "past_cancellations", "past_percent_cancelled", "modified_profile", "is_gds_user"]
 
 
-APP_FEATURES_TO_KEEP = ["price", "name", "airport_code", "created_at", "pickup", "dropoff", "insurance", "past_rides",
+APP_FEATURES_TO_KEEP = ["name", "airport_code", "created_at", "pickup", "dropoff", "insurance", "price", "past_rides",
                         "past_cancellations", "credit_card", "awards_referral_bonus", "used_promo",
                         "used_referral", "modified_profile", "is_gds_user", "local_rental", "web_booking",
                         "probability", "month"]
@@ -20,8 +20,8 @@ BINARY_YES_TO_NO = ["credit_card", "awards_referral_bonus",	"used_promo", "used_
                     "is_gds_user", "local_rental", "web_booking"]
 
 
-APP_COL_NAMES = {"price": "Price", "airport_code": "Location", "created_at": "Created", "pickup": "Pickup",
-                 "dropoff": "Dropoff", "insurance": "Insurance", "past_rides": "Past Rides",
+APP_COL_NAMES = {"airport_code": "Location", "created_at": "Created", "pickup": "Pickup", "dropoff": "Dropoff",
+                 "insurance": "Insurance", "price": "Price ($)", "past_rides": "Past Rides",
                  "past_cancellations": "Past Rides Cancelled", "credit_card": "Credit Card",
                  "awards_referral_bonus": "Used Referral", "used_promo": "Used Promo",
                  "used_referral": "Signup Referral", "modified_profile": "Modified Profile", "is_gds_user": "GDS User",
