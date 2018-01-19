@@ -2,6 +2,23 @@ body {
   text-align: center;
   display: block;
   width: 100%;
+  background-color: #E0E0E0;
+}
+
+.logo-new {
+  position: absolute;
+  top: 1.5%;
+  left: 1.5%;
+}
+
+.logo-index {
+  position: absolute;
+  top: 1.5%;
+  left: 1.5%;
+}
+
+img {
+  margin-top: 0.75%;
 }
 
 .button {
@@ -13,6 +30,7 @@ body {
 .summary-stats-container-new {
   display: inline-block;
   width: 40%;
+  font-weight: bold;
 }
 
 .summary-stats-container-index {
@@ -20,6 +38,7 @@ body {
   width: 50%;
   margin-top: 1.5%;
   margin-bottom: 0.5%;
+  font-weight: bold;
 }
 
 .summary-stats-new {
@@ -37,6 +56,11 @@ h3 {
   margin-left: 2.5%;
   margin-right: 2.5%;
   margin-bottom: 0;
+}
+
+a {
+  color: black;
+  font-weight: bold;
 }
 
 
@@ -139,16 +163,39 @@ input[type='radio'] {
 }
 
 table {
-  width: 90%;
-  margin-left: 5%;
-  margin-right: 5%;
+  width: 95%;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  border-collapse: collapse;
+  border-spacing: 0 1em;
 }
 
 th {
   text-align: center;
+  background-color: white;
+  border: 3px solid transparent;
 }
 
 td {
-  width:1px;
-  white-space:nowrap;
+  width: 1px;
+  white-space: nowrap;
+  border: 2px solid transparent;
+  padding-top: .25em;
+  padding-bottom: .25em;
+}
+
+tr {
+  margin-top: 2px;
+}
+
+tr:nth-child(odd) {
+  background-color: #e6e6e6;
+}
+
+tr:nth-child(even) {
+  background-color: white;
+}
+
+.footer {
+  font-weight: bold;
 }

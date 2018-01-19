@@ -7,9 +7,15 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
 	</head>
 	<body>
-        <a class="button" href="{{ url_for('new_reservation') }}">Create New Reservation</a>
-        <h1 class="header">All Reservations</h1>
-        <div>
+        <div class="logo-index">
+            <h3>In Partnership With</h3>
+            <img src="{{ url_for('static', filename='img/silvercar_logo.png') }}">
+        </div>
+        <header>
+            <a class="button" href="{{ url_for('new_reservation') }}">Create New Reservation</a>
+            <h1 class="header">All Reservations</h1>
+        </header>
+        <main>
             <div class="select-container">
                 <select id="select-location" class="select" name="select">
                     <option value="All">All Locations</option>
@@ -42,10 +48,13 @@
                     <p class="revenue">{{ revenue }}</p>
                 </div>
             </div>
-        </div>
+        </main>
         <div class="data">
             {{ data | safe }}
         </div>
+        <footer>
+            <p class="footer">Made by <a href="http://github.com/mengeling" target="_blank">Michael Engeling</a>
+        </footer>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script>var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
         <script src="{{ url_for('static', filename='js/app.js') }}"></script>

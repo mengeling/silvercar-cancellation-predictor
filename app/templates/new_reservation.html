@@ -8,134 +8,145 @@
 	</head>
 
 	<body>
-		<a class="button" href="{{ url_for('index') }}">Home</a>
-        <h1>New Reservation</h1>
-		<div class="summary-stats-container-new">
-			<div class="summary-stats-new">
-				<h3>Probability:</h3>
-				<p class="probability"></p>
-			</div>
-			<div class="summary-stats-new">
-				<h3>Prediction:</h3>
-				<p class="prediction"></p>
-			</div>
-			<div class="summary-stats-new">
-				<h3>Price:</h3>
-				<p class="price"></p>
-			</div>
-		</div>
-        <div>
-            <form class="form-new-reservation">
-				<fieldset>
-					<div class="form-date-container">
-						<label class="form-label">Reservation Created:</label>
-						<input class="form-input" type="date" name="created" value="2018-01-01">
-					</div>
-					<div class="form-date-container">
-						<label class="form-label">Pickup Date:</label>
-						<input class="form-input" type="date" name="pickup" value="2018-01-02">
-						<label class="form-label">Dropoff Date:</label>
-						<input class="form-input" type="date" name="dropoff" value="2018-01-03">
-					</div>
-					<div class="form-select-container">
-						<label class="form-label">Location:</label>
-						<select class="form-input" name="location">
-							{% for location in locations %}
-							<option value="{{ location }}">{{ location }}</option>
-							{% endfor %}
-						</select>
-						<label class="form-label">Insurance:</label>
-						<select class="form-input" name="insurance">
-							<option value="Personal">Personal</option>
-							<option value="Silvercar">Silvercar</option>
-							<option value="Corporate">Corporate</option>
-						</select>
-					</div>
-					<div class="main-form-container">
-						<div class="sub-form-container">
-							<div class="form-label-container">
-								<div class="label-container">
-									<label class="form-label">Past Rides:</label>
-								</div>
-								<div class="label-container">
-									<label class="radio-label">Entered Credit Card?</label>
-								</div>
-								<div class="label-container">
-									<label class="radio-label">Used Promo?</label>
-								</div>
-								<div class="label-container">
-									<label class="radio-label">Modified Profile?</label>
-								</div>
-								<div class="label-container">
-									<label class="radio-label">Local Rental?</label>
-								</div>
-							</div>
-							<div class="form-input-container">
-								<div class="input-container">
-									<input class="form-input" type="number" name="ride-count" min=0 value="0">
-								</div>
-								<div class="input-container">
-									Yes<input class="form-input" type="radio" name="credit-card" value="Yes">
-									No<input class="form-input" type="radio" name="credit-card" value="No" checked>
-								</div>
-								<div class="input-container">
-									Yes<input class="form-input" type="radio" name="promo" value="Yes">
-									No<input class="form-input" type="radio" name="promo" value="No" checked>
-								</div>
-								<div class="input-container">
-									Yes<input class="form-input" type="radio" name="profile-modified" value="Yes">
-									No<input class="form-input" type="radio" name="profile-modified" value="No" checked>
-								</div>
-								<div class="input-container">
-									Yes<input class="form-input" type="radio" name="local" value="Yes">
-									No<input class="form-input" type="radio" name="local" value="No" checked>
-								</div>
-							</div>
-						</div>
-						<div class="sub-form-container">
-							<div class="form-label-container">
-								<div class="label-container">
-									<label class="form-label">Past Rides Cancelled:</label>
-								</div>
-								<div class="label-container">
-									<label class="radio-label">Used Referral?</label>
-								</div>
-								<div class="label-container">
-									<label class="radio-label">Signup Referral?</label>
-								</div>
-								<div class="label-container">
-									<label class="radio-label">GDS User?</label>
-								</div>
-								<div class="label-container">
-									<label class="radio-label">Web Booking?</label>
-								</div>
-							</div>
-							<div class="form-input-container">
-								<div class="input-container">
-									<input class="form-input" type="number" name="cancel-count" min=0 value="0">
-								</div>
-								<div class="input-container">
-									Yes<input class="form-input" type="radio" name="referral-bonus" value="Yes">
-									No<input class="form-input" type="radio" name="referral-bonus" value="No" checked>
-								</div>
-								<div class="input-container">
-									Yes<input class="form-input" type="radio" name="referred" value="Yes">
-									No<input class="form-input" type="radio" name="referred" value="No" checked>
-								</div>
-								<div class="input-container">
-									Yes<input class="form-input" type="radio" name="gds" value="Yes">
-									No<input class="form-input" type="radio" name="gds" value="No" checked>
-								</div>
-								<div class="input-container">
-									Yes<input class="form-input" type="radio" name="web" value="Yes">
-									No<input class="form-input" type="radio" name="web" value="No" checked>
-								</div>
-							</div>
-						</div>
-					</div>
-				</fieldset>
-            </form>
+		<div class="logo-new">
+            <h3>In Partnership With</h3>
+            <img src="{{ url_for('static', filename='img/silvercar_logo.png') }}">
         </div>
+		<header>
+			<a class="button" href="{{ url_for('index') }}">Home</a>
+        	<h1>New Reservation</h1>
+		</header>
+		<main>
+			<div class="summary-stats-container-new">
+				<div class="summary-stats-new">
+					<h3>Probability:</h3>
+					<p class="probability"></p>
+				</div>
+				<div class="summary-stats-new">
+					<h3>Prediction:</h3>
+					<p class="prediction"></p>
+				</div>
+				<div class="summary-stats-new">
+					<h3>Price:</h3>
+					<p class="price"></p>
+				</div>
+			</div>
+			<div>
+				<form class="form-new-reservation">
+					<fieldset>
+						<div class="form-date-container">
+							<label class="form-label">Reservation Created:</label>
+							<input class="form-input" type="date" name="created" value="2018-01-01">
+						</div>
+						<div class="form-date-container">
+							<label class="form-label">Pickup Date:</label>
+							<input class="form-input" type="date" name="pickup" value="2018-01-02">
+							<label class="form-label">Dropoff Date:</label>
+							<input class="form-input" type="date" name="dropoff" value="2018-01-03">
+						</div>
+						<div class="form-select-container">
+							<label class="form-label">Location:</label>
+							<select class="form-input" name="location">
+								{% for location in locations %}
+								<option value="{{ location }}">{{ location }}</option>
+								{% endfor %}
+							</select>
+							<label class="form-label">Insurance:</label>
+							<select class="form-input" name="insurance">
+								<option value="Personal">Personal</option>
+								<option value="Silvercar">Silvercar</option>
+								<option value="Corporate">Corporate</option>
+							</select>
+						</div>
+						<div class="main-form-container">
+							<div class="sub-form-container">
+								<div class="form-label-container">
+									<div class="label-container">
+										<label class="form-label">Past Rides:</label>
+									</div>
+									<div class="label-container">
+										<label class="radio-label">Entered Credit Card?</label>
+									</div>
+									<div class="label-container">
+										<label class="radio-label">Used Promo?</label>
+									</div>
+									<div class="label-container">
+										<label class="radio-label">Modified Profile?</label>
+									</div>
+									<div class="label-container">
+										<label class="radio-label">Local Rental?</label>
+									</div>
+								</div>
+								<div class="form-input-container">
+									<div class="input-container">
+										<input class="form-input" type="number" name="ride-count" min=0 value="0">
+									</div>
+									<div class="input-container">
+										Yes<input class="form-input" type="radio" name="credit-card" value="Yes">
+										No<input class="form-input" type="radio" name="credit-card" value="No" checked>
+									</div>
+									<div class="input-container">
+										Yes<input class="form-input" type="radio" name="promo" value="Yes">
+										No<input class="form-input" type="radio" name="promo" value="No" checked>
+									</div>
+									<div class="input-container">
+										Yes<input class="form-input" type="radio" name="profile-modified" value="Yes">
+										No<input class="form-input" type="radio" name="profile-modified" value="No" checked>
+									</div>
+									<div class="input-container">
+										Yes<input class="form-input" type="radio" name="local" value="Yes">
+										No<input class="form-input" type="radio" name="local" value="No" checked>
+									</div>
+								</div>
+							</div>
+							<div class="sub-form-container">
+								<div class="form-label-container">
+									<div class="label-container">
+										<label class="form-label">Past Rides Cancelled:</label>
+									</div>
+									<div class="label-container">
+										<label class="radio-label">Used Referral?</label>
+									</div>
+									<div class="label-container">
+										<label class="radio-label">Signup Referral?</label>
+									</div>
+									<div class="label-container">
+										<label class="radio-label">GDS User?</label>
+									</div>
+									<div class="label-container">
+										<label class="radio-label">Web Booking?</label>
+									</div>
+								</div>
+								<div class="form-input-container">
+									<div class="input-container">
+										<input class="form-input" type="number" name="cancel-count" min=0 value="0">
+									</div>
+									<div class="input-container">
+										Yes<input class="form-input" type="radio" name="referral-bonus" value="Yes">
+										No<input class="form-input" type="radio" name="referral-bonus" value="No" checked>
+									</div>
+									<div class="input-container">
+										Yes<input class="form-input" type="radio" name="referred" value="Yes">
+										No<input class="form-input" type="radio" name="referred" value="No" checked>
+									</div>
+									<div class="input-container">
+										Yes<input class="form-input" type="radio" name="gds" value="Yes">
+										No<input class="form-input" type="radio" name="gds" value="No" checked>
+									</div>
+									<div class="input-container">
+										Yes<input class="form-input" type="radio" name="web" value="Yes">
+										No<input class="form-input" type="radio" name="web" value="No" checked>
+									</div>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+		</main>
+		<footer>
+            <p class="footer">Made by <a href="http://github.com/mengeling" target="_blank">Michael Engeling</a>
+        </footer>
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 		<script>var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
 		<script src="{{ url_for('static', filename='js/app.js') }}"></script>

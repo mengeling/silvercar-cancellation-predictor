@@ -3,18 +3,19 @@ import pickle
 from sqlalchemy import create_engine
 from sklearn.metrics import accuracy_score
 from sklearn.linear_model import LogisticRegression
+from xgboost import XGBClassifier
 
 import constants as C
 from pipeline import Pipeline
 
 
 class CancellationModel:
-    def __init__(self, classifier):
+    def __init__(self):
         """
         Initialize model
         """
         self.pipeline = None
-        self.classifier = classifier
+        self.classifier = XGBClassifier(n_estimators=5000, max_depth=3, learning_rate=0.05, n_jobs=-1)
 
     def fit(self, df, y):
         """
@@ -61,7 +62,7 @@ if __name__ == '__main__':
     y = df.pop("current_state").values
 
     from model import CancellationModel
-    model = CancellationModel(LogisticRegression())
+    model = CancellationModel()
     model.fit(df, y)
     with open('model.pkl', 'wb') as f:
         pickle.dump(model, f)
