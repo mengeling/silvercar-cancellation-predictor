@@ -1,0 +1,164 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import geocoder
+import geopy
+from collections import defaultdict
+from itertools import product
+
+
+def get_datetime(series):
+    '''
+    Change timestamp columns from numbers to datetimes
+    '''
+    return pd.to_datetime('1899-12-30') + pd.to_timedelta(series, 'D')
+
+
+def plot_distplot(series, xlim=None, ylim=None, bins=100):
+    """
+    Plot's Seaborn's distplot that plots a histogram and KDE
+    """
+    fig, ax = plt.subplots()
+    ax = sns.distplot(series, bins=bins, color=(0.27, 0.67, 0.78))
+    if xlim is not None:
+        ax.set_xlim(xlim)
+    if ylim is not None:
+        ax.set_ylim(ylim)
+    ax.set_title("Histogram")
+    ax.set_xlabel(series.name)
+    ax.set_ylabel("Frequency")
+    fig.show()
+
+
+def plot_distances(df):
+    """
+    Plot distances between user residence and the pick-up location
+    """
+    mask = df["cancelled"] == 1
+    finished_mean = df["distance_to_pickup"][~mask].mean()
+    cancelled_mean = df["distance_to_pickup"][mask].mean()
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(14, 14))
+    ax1.hist(df["distance_to_pickup"][~mask], bins=20)
+    ax1.vlines(finished_mean, 0, 1750, label="Mean: {:,.0f}".format(finished_mean))
+    ax2.set_title("Cancelled Rides")
+    ax2.hist(df["distance_to_pickup"][mask], bins=20, color="r")
+    ax2.vlines(cancelled_mean, 0, 550, label="Mean: {:,.0f}".format(cancelled_mean))
+    ax1.set_title("Finished Rides", fontsize=16)
+    ax2.set_title("Cancelled Rides", fontsize=16)
+    ax1.set_xlabel("Distance to Pickup Location", fontsize=12)
+    ax2.set_xlabel("Distance to Pickup Location", fontsize=12)
+    ax1.set_ylabel("Frequency", fontsize=12)
+    ax2.set_ylabel("Frequency", fontsize=12)
+    ax1.set_xlim((0, 3000))
+    ax2.set_xlim((0, 3000))
+    ax1.legend()
+    ax2.legend()
+    fig.savefig("../images/distance_to_pickup.png")
+
+
+def plot_feature_importances(df, feature_importances):
+    """
+    Plot feature importances - stolen from churn case study solution
+    """
+    feat_scores = pd.DataFrame({'Feature Importances': feature_importances},
+                           index=df.columns)
+    feat_scores = feat_scores.sort_values(by='Feature Importances')
+    feat_scores.plot(kind='barh', figsize=(8,8))
+
+
+def plot_confusion_matrix(cm):
+    """
+    Plot confusion matrix - stolen from sklearn's example
+    """
+    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+    plt.title("Confusion Matrix")
+    plt.colorbar()
+    plt.xticks(np.arange(2), ["Finished", "Cancelled"], rotation=45)
+    plt.yticks(np.arange(2), ["Finished", "Cancelled"])
+    for i, j in product(range(cm.shape[0]), range(cm.shape[1])):
+        plt.text(j, i, format(cm[i, j], 'd'), horizontalalignment="center",
+                 color="white" if cm[i, j] > cm.max() / 2 else "black")
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    plt.show()
+
+
+def plot_roc_curve(fpr, tpr, thresholds, auc):
+    """
+    Plot ROC curve - stolen from sklearn's example
+    """
+    plt.plot(fpr, tpr, color='darkorange', lw=2, label='ROC curve (area = %0.2f)' % auc)
+    plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('ROC Curve')
+    plt.legend(loc="lower right")
+    plt.show()
+
+
+def get_ip_lat_lng(ip):
+    """
+    Use the geocoder API to retrieve the latitude and longitude for the input IP address
+    """
+    if isinstance(ip, str):
+        return geocoder.ip(ip).latlng
+
+
+def get_city_lat_lng(city_state):
+    """
+    Use the geocoder API to retrieve the latitude and longitude for the input city
+    """
+    if isinstance(city_state, str):
+        return geocoder.google(city_state).latlng
+
+
+def distance_between_coords(row):
+    """
+    Calculate the distance between coordinates
+    """
+    if isinstance(row["lat_lng"], list) & isinstance(row["user_lat_lng"], list):
+        return geopy.distance.vincenty(row["lat_lng"], row["user_lat_lng"]).miles
+
+
+def distance_between_coords2(row):
+    """
+    Calculate the distance between coordinates
+    """
+    residence_lat_lng = [row["latitude"], row["longitude"]]
+    if isinstance(row["lat_lng"], list) & isinstance(residence_lat_lng, list):
+        return geopy.distance.vincenty(row["lat_lng"], residence_lat_lng).miles
+
+
+def get_past_ride_cnt(df, y):
+    """
+    Create list of past rides
+    """
+    d = defaultdict(list)
+    ride_history = []
+    for i, user_id in enumerate(df["user_id"]):
+        ride_history.append(d[user_id].copy())
+        if y is not None:
+            d[user_id].append(y[i])
+    return ride_history
+
+
+def change_datetimes(df, *args):
+    """
+    Change timestamp columns from numbers to datetimes
+    """
+    for col_name in args:
+        df[col_name] = pd.to_datetime('1899-12-30') + pd.to_timedelta(df[col_name], 'D')
+    return df
+
+
+def calculate_time_between(df, **kwargs):
+    """
+    Calculate the number of days between two datetime features
+    """
+    for k, (v1, v2) in kwargs.items():
+        df[k] = (df[v1] - df[v2]).dt.total_seconds() / 86400
+    return df
+

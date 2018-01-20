@@ -19,7 +19,7 @@ APP_FEATURES_TO_KEEP = ["name", "airport_code", "created_at", "pickup", "dropoff
                         "modified_profile", "is_gds_user", "local_rental", "web_booking", "probability", "month"]
 
 
-BINARY_YES_TO_NO = ["credit_card", "awards_referral_bonus",	"used_promo", "modified_profile",
+BINARY_TO_YES_NO = ["credit_card", "awards_referral_bonus",	"used_promo", "modified_profile",
                     "is_gds_user", "local_rental", "web_booking", "created_as_guest"]
 
 
@@ -54,7 +54,7 @@ BOOKED_RESERVATIONS = (
 
 
 USERS = (
-    "SELECT u.id, u.is_gds_user, u.created_at, u.updated_at, c.postal_code, "
+    "SELECT u.id, u.is_gds_user, u.referral_code, u.created_at, u.updated_at, c.postal_code, "
     "i.insurance_corporate, i.insurance_personal, i.insurance_silvercar "
     "FROM users u "
     "LEFT JOIN insurance i ON u.id = i.user_id "
@@ -66,3 +66,9 @@ USERS = (
 GET_TIME_ZONE = (
     "SELECT time_zone FROM locations WHERE name = '{}'"
 )
+
+
+DATE_COLS = ["pickup", "dropoff", "created_at", "updated_at", "created_at_user"]
+
+
+DATE_COLS_SHORT = ["pickup", "dropoff", "created_at"]

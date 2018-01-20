@@ -59,10 +59,18 @@ class Pipeline:
         """
         Create all date-related features needed for the model
         """
-        df = self._change_datetimes(df, individual, "pickup", "dropoff", "created_at", "updated_at", "created_at_user")
+        # Change columns to datetimes
+        if individual:
+            df[C.DATE_COLS_SHORT] = df[C.DATE_COLS_SHORT].apply(pd.to_datetime)
+        else:
+            df[C.DATE_COLS] = df[C.DATE_COLS].apply(self._change_datetimes)
+
+        # Calculate the number of days between the created, pick-up, and drop-off columns
         df = self._calculate_time_between(df, individual,
                                           days_to_pickup=("pickup", "created_at"),
                                           trip_duration=("dropoff", "pickup"))
+
+        # Create date binaries
         df["pickup_dow"] = df["pickup"].dt.dayofweek
         df["midday_pickup"] = df["pickup"].dt.hour.isin(np.arange(7, 13))
         df["weekend_pickup"] = df["pickup_dow"].isin([4, 5, 6]).astype(int)
@@ -70,18 +78,11 @@ class Pipeline:
         return df
 
     @staticmethod
-    def _change_datetimes(df, individual, *args):
+    def _change_datetimes(series):
         """
         Change timestamp columns from numbers to datetimes
         """
-        for col_name in args:
-            if individual:
-                if col_name == "updated_at" or col_name == "created_at_user":
-                    continue
-                df[col_name] = pd.to_datetime(df[col_name])
-            else:
-                df[col_name] = pd.to_datetime('1899-12-30') + pd.to_timedelta(df[col_name], 'D')
-        return df
+        return pd.to_datetime('1899-12-30') + pd.to_timedelta(series, 'D')
 
     @staticmethod
     def _calculate_time_between(df, individual, **kwargs):
@@ -90,6 +91,7 @@ class Pipeline:
         """
         for k, (v1, v2) in kwargs.items():
             if individual:
+                # Set the number of days to 0 if the app user chooses dates that don't make sense
                 df[k] = 0 if df[v1].values < df[v2].values else (df[v1] - df[v2]).dt.total_seconds() / 86400
             else:
                 df[k] = (df[v1] - df[v2]).dt.total_seconds() / 86400
@@ -103,7 +105,7 @@ class Pipeline:
         df["used_promo"] = df["promo_code_id"].notnull().astype(int)
         df["credit_card"] = df["postal_code"].notnull().astype(int)
         df["web_booking"] = (df["booking_application"] == "web").astype(int)
-        df["western_pickup"] = ((df["time_zone"] == "pst") | (df["time_zone"] == "mst")).astype(int)
+        df["western_pickup"] = (df["time_zone"] == "pst").astype(int)
         df["modified_profile"] = (df["updated_at"].dt.date > df["created_at_user"].dt.date).astype(int)
         return df
 
@@ -155,11 +157,11 @@ class Pipeline:
     @staticmethod
     def _create_western_binary(df):
         """
-        Create the past_percent_cancelled and western_pickup features
+        Create western_pickup binary feature
         """
         engine = create_engine(C.ENGINE)
         time_zone = engine.execute(C.GET_TIME_ZONE.format(df["location"].iloc[0])).fetchone()[0]
-        df["western_pickup"] = (time_zone == "pst") | (time_zone == "mst")
+        df["western_pickup"] = time_zone == "pst"
         return df
 
     @staticmethod

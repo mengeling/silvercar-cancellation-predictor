@@ -25,7 +25,7 @@ def prepare_data(df):
     df["insurance"] = df.apply(lambda row: insurance_mapping(row), axis=1)
     df["month"] = df["pickup"].dt.strftime("%B, %Y")
     df = convert_datetimes_to_strings(df, "created_at", "pickup", "dropoff")
-    df[C.BINARY_YES_TO_NO] = df[C.BINARY_YES_TO_NO].replace({1: "Yes", 0: "No"})
+    df[C.BINARY_TO_YES_NO] = df[C.BINARY_TO_YES_NO].replace({1: "Yes", 0: "No"})
     return df[C.APP_FEATURES_TO_KEEP].sort_values("pickup")
 
 
