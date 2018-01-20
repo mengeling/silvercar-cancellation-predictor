@@ -145,6 +145,7 @@ class Pipeline:
         """
         Create the past_percent_cancelled and western_pickup features
         """
+        df["past_rides"] = df["past_finished"] + df["past_cancellations"]
         if df["past_rides"].sum() == 0:
             df["past_percent_cancelled"] = self.y_mean
         else:

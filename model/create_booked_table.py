@@ -8,7 +8,7 @@ from model import get_data
 
 def create_booked_table(engine, df, model):
     """
-    Create Postgres table for the booked data frame and predictions and probabilities
+    Create Postgres table for the booked data frame with predictions and probabilities
     """
     df_new, X = model.pipeline.transform(df)
     probabilities = model.classifier.predict_proba(X)[:, 1]

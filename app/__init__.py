@@ -29,17 +29,17 @@ df.rename(index=str, columns=C.APP_COL_NAMES, inplace=True)
 total_count = df.shape[0]
 cancellations = df["Cancellation Probability"] > C.THRESHOLD
 cancel_count = np.sum(cancellations.astype(int))
+revenue = df[~cancellations]["Price ($)"].sum()
 
 
 @app.route('/')
 def index():
     """
-    Renders index.html template for the main page of the app, using entire booked data frame
+    Renders index.html template for the main page of the app, using summary stats and entire booked data frame
     """
     return render_template(
-        'index.html', data=df.drop(["month", "name"], axis=1).to_html(index=False),
-        locations=locations, months=months,
-        revenue="${:,}".format(int(df[~cancellations]["Price ($)"].sum())), total_count="{:,}".format(total_count),
+        'index.html', data=df.drop(["month", "name"], axis=1).to_html(index=False), locations=locations,
+        months=months, revenue="${:,.0f}".format(revenue), total_count="{:,}".format(total_count),
         cancel_count="{:,}".format(cancel_count), percent_cancelled="{:,.0f}%".format(100 * cancel_count / total_count)
     )
 
@@ -65,17 +65,20 @@ def get_df_subset():
     if location is not None and month is not None:
         df_subset = df if location == "All" else df[df["name"] == location]
         df_subset = df_subset if month == "All" else df_subset[df_subset["month"] == month]
+
+        # Calculate summary stats on the smaller data frame
         total_count = df_subset.shape[0]
         cancellations = df_subset["Cancellation Probability"] > C.THRESHOLD
         cancel_count = np.sum(cancellations.astype(int))
+        revenue = df_subset[cancellations]["Price ($)"].sum()
 
-        # Jsonify the data to be displayed on the index page
+        # Convert the data frame and summary stats to JSON and send them back
         return jsonify({
                 "location": location,
                 "total_count": "{:,}".format(total_count),
                 "cancel_count": "{:,}".format(cancel_count),
                 "percent_cancelled":  "{:,.0f}%".format(100 * cancel_count / total_count),
-                "revenue": "${:,.0f}".format(df_subset[cancellations]["Price ($)"].sum()),
+                "revenue": "${:,.0f}".format(revenue),
                 "data": df_subset.drop(["month", "name"], axis=1).to_html(index=False)
         })
 
@@ -83,16 +86,23 @@ def get_df_subset():
 @app.route('/calculate_probability/', methods=['GET'])
 def calculate_probability():
     """
-    Creates a data frame with one row based off of the inputs to then calculate
-    the probability, prediction, and price for the interactive demo
+    Calculate probability, prediction, and price for the interactive demo
     """
+    # Use the request arguments to create a data frame and then use the pipeline to transform it
     df_new = pd.DataFrame(request.args, index=[0])
     X = model.pipeline.transform_individual(df_new)
+
+    # Get the probability and prediction
     probability = model.classifier.predict_proba(X)[0, 1]
     prediction = "Cancelled Ride" if probability > C.THRESHOLD else "Finished Ride"
+
+    # Set the price equal to 0 if the user makes the pickup date after the drop-off date
+    # Otherwise the price is the number of days times the daily rate
     price = 0 if df_new["dropoff"].values < df_new["pickup"].values else int(
         C.DAILY_RATE * (pd.to_datetime(df_new["dropoff"]) - pd.to_datetime(df_new["pickup"])).dt.total_seconds() / 86400
     )
+
+    # Convert the probability, prediction, and price to JSON and send them back
     return jsonify({
         "probability": "{:,.2f}".format(probability),
         "prediction": prediction,

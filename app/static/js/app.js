@@ -35,7 +35,7 @@ $( ".form-input" ).change(function () {
             web_booking: $( "input[name='web']:checked" ).val(),
             modified_profile: $( "input[name='profile-modified']:checked" ).val(),
             location: $( "select[name='location'] option:selected" ).val(),
-            past_rides: $( "input[name='ride-count']" ).val(),
+            past_finished: $( "input[name='finished-count']" ).val(),
             past_cancellations: $( "input[name='cancel-count']" ).val() },
     success: function(data) {
       $('.probability').text(data.probability);
@@ -43,14 +43,5 @@ $( ".form-input" ).change(function () {
       $('.price').text(data.price);
     }
   });
-})
-.change();
-
-
-$( "input[type='number']" ).change(function () {
-  var min = $( "input[name='cancel-count']" ).val();
-  if ( $( "input[name='ride-count']" ).val() < min ) {
-    $( "input[name='ride-count']" ).val(min)
-  }
 })
 .change();
