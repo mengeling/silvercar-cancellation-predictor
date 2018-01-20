@@ -1,30 +1,33 @@
 THRESHOLD = 0.5
 
 
+DAILY_RATE = 50
+
+
 ENGINE = "postgresql://mengeling:mengeling@localhost:5432/silvercar"
 
 
-MODEL_FEATURES_TO_KEEP = ["local_rental", "awards_referral_bonus", "insurance_corporate", "insurance_silvercar",
-                          "days_to_pickup", "trip_duration", "weekend_pickup", "winter_pickup", "used_promo",
-                          "used_referral", "credit_card", "web_booking", "western_pickup", "past_rides", "pickup_dow",
-                          "past_cancellations", "past_percent_cancelled", "modified_profile", "is_gds_user"]
+MODEL_FEATURES_TO_KEEP = ["created_as_guest", "local_rental", "awards_referral_bonus", "is_gds_user",
+                          "insurance_corporate", "insurance_personal", "insurance_silvercar", "days_to_pickup",
+                          "trip_duration", "weekend_pickup", "winter_pickup", "used_promo", "credit_card",
+                          "web_booking", "past_rides", "past_cancellations", "past_percent_cancelled", "pickup_dow",
+                          "modified_profile", "western_pickup", "midday_pickup"]
 
 
 APP_FEATURES_TO_KEEP = ["name", "airport_code", "created_at", "pickup", "dropoff", "insurance", "price", "past_rides",
-                        "past_cancellations", "credit_card", "awards_referral_bonus", "used_promo",
-                        "used_referral", "modified_profile", "is_gds_user", "local_rental", "web_booking",
-                        "probability", "month"]
+                        "past_cancellations", "created_as_guest", "credit_card", "awards_referral_bonus", "used_promo",
+                        "modified_profile", "is_gds_user", "local_rental", "web_booking", "probability", "month"]
 
 
-BINARY_YES_TO_NO = ["credit_card", "awards_referral_bonus",	"used_promo", "used_referral", "modified_profile",
-                    "is_gds_user", "local_rental", "web_booking"]
+BINARY_YES_TO_NO = ["credit_card", "awards_referral_bonus",	"used_promo", "modified_profile",
+                    "is_gds_user", "local_rental", "web_booking", "created_as_guest"]
 
 
 APP_COL_NAMES = {"airport_code": "Location", "created_at": "Created", "pickup": "Pickup", "dropoff": "Dropoff",
                  "insurance": "Insurance", "price": "Price ($)", "past_rides": "Past Rides",
                  "past_cancellations": "Past Rides Cancelled", "credit_card": "Credit Card",
                  "awards_referral_bonus": "Used Referral", "used_promo": "Used Promo",
-                 "used_referral": "Signup Referral", "modified_profile": "Modified Profile", "is_gds_user": "GDS User",
+                 "created_as_guest": "Guest", "modified_profile": "Modified Profile", "is_gds_user": "GDS User",
                  "local_rental": "Local Rental", "web_booking": "Web Booking",
                  "probability": "Cancellation Probability"}
 
@@ -51,8 +54,8 @@ BOOKED_RESERVATIONS = (
 
 
 USERS = (
-    "SELECT u.id, u.is_gds_user, u.referral_code, u.created_at, u.updated_at, "
-    "i.insurance_corporate, i.insurance_personal, i.insurance_silvercar, c.postal_code "
+    "SELECT u.id, u.is_gds_user, u.created_at, u.updated_at, c.postal_code, "
+    "i.insurance_corporate, i.insurance_personal, i.insurance_silvercar "
     "FROM users u "
     "LEFT JOIN insurance i ON u.id = i.user_id "
     "LEFT JOIN user_profile p ON u.id = p.user_id "

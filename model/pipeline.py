@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from collections import defaultdict
 from sklearn.preprocessing import StandardScaler
@@ -34,7 +35,7 @@ class Pipeline:
         """
         df = df.apply(pd.to_numeric, errors='ignore')
         df = self._create_date_features(df, individual=True)
-        df = self._create_insurance_features(df, "Corporate", "Silvercar")
+        df = self._create_insurance_features(df, "Corporate", "Silvercar", "Personal")
         df = self._calculate_percent_cancelled(df)
         df = self._create_western_binary(df)
         df.replace({"Yes": 1, "No": 0, True: 1, False: 0}, inplace=True)
@@ -42,7 +43,7 @@ class Pipeline:
 
     def _run_pipeline(self, df, y=None):
         """
-        Make all of the requisite changes to the DataFrame
+        Make all of the requisite changes to the data frame
         """
         df = self._create_historical_features(df, y)
         df = self._create_date_features(df)
@@ -51,9 +52,8 @@ class Pipeline:
         if y is not None:
             X = self.scaler.fit_transform(df.copy()[C.MODEL_FEATURES_TO_KEEP])
             return df, X
-        else:
-            X = self.scaler.transform(df.copy()[C.MODEL_FEATURES_TO_KEEP])
-            return df, X
+        X = self.scaler.transform(df.copy()[C.MODEL_FEATURES_TO_KEEP])
+        return df, X
 
     def _create_date_features(self, df, individual=False):
         """
@@ -64,6 +64,7 @@ class Pipeline:
                                           days_to_pickup=("pickup", "created_at"),
                                           trip_duration=("dropoff", "pickup"))
         df["pickup_dow"] = df["pickup"].dt.dayofweek
+        df["midday_pickup"] = df["pickup"].dt.hour.isin(np.arange(7, 13))
         df["weekend_pickup"] = df["pickup_dow"].isin([4, 5, 6]).astype(int)
         df["winter_pickup"] = df["pickup"].dt.month.isin([1, 12]).astype(int)
         return df
@@ -100,7 +101,6 @@ class Pipeline:
         Create all binary features needed for the model
         """
         df["used_promo"] = df["promo_code_id"].notnull().astype(int)
-        df["used_referral"] = df["referral_code"].notnull().astype(int)
         df["credit_card"] = df["postal_code"].notnull().astype(int)
         df["web_booking"] = (df["booking_application"] == "web").astype(int)
         df["western_pickup"] = ((df["time_zone"] == "pst") | (df["time_zone"] == "mst")).astype(int)

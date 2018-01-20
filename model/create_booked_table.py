@@ -8,7 +8,7 @@ from model import get_data
 
 def create_booked_table(engine, df, model):
     """
-    Create Postgres table for the booked DataFrame and predictions and probabilities
+    Create Postgres table for the booked data frame and predictions and probabilities
     """
     df_new, X = model.pipeline.transform(df)
     probabilities = model.classifier.predict_proba(X)[:, 1]
@@ -18,7 +18,10 @@ def create_booked_table(engine, df, model):
 
 
 def prepare_data(df):
-    df["price"] = (50 * ((df["dropoff"] - df["pickup"]).dt.total_seconds() / 86400)).astype(int)
+    """
+    Prepare the data to be displayed in the HTML table
+    """
+    df["price"] = (C.DAILY_RATE * ((df["dropoff"] - df["pickup"]).dt.total_seconds() / 86400)).astype(int)
     df["insurance"] = df.apply(lambda row: insurance_mapping(row), axis=1)
     df["month"] = df["pickup"].dt.strftime("%B, %Y")
     df = convert_datetimes_to_strings(df, "created_at", "pickup", "dropoff")
@@ -27,6 +30,9 @@ def prepare_data(df):
 
 
 def insurance_mapping(row):
+    """
+    Create a categorical column from the three insurance columns
+    """
     if row["insurance_corporate"]:
         return "Corporate"
     elif row["insurance_personal"]:
@@ -37,12 +43,16 @@ def insurance_mapping(row):
 
 
 def convert_datetimes_to_strings(df, *args):
+    """
+    Change timestamp columns from numbers to datetimes
+    """
     for col_name in args:
         df[col_name] = df[col_name].dt.strftime("%m-%d-%y")
     return df
 
 
 if __name__ == '__main__':
+    # Load pickle file, get the booked data, and write it to Postgres
     with open('model.pkl', 'rb') as f:
         model = pickle.load(f)
     engine = create_engine(C.ENGINE)
