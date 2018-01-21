@@ -14,7 +14,7 @@ class CancellationModel:
         Initialize model with an empty pipeline attribute and a classifier
         """
         self.pipeline = None
-        self.classifier = XGBClassifier(n_estimators=2000, max_depth=3, learning_rate=0.1, n_jobs=-1)
+        self.classifier = XGBClassifier(n_estimators=2500, max_depth=3, learning_rate=0.05, n_jobs=-1)
 
     def fit(self, df, y):
         """
