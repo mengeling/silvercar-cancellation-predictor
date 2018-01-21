@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import geocoder
-import geopy
+from geopy.distance import vincenty
 from collections import defaultdict
 from itertools import product
 
@@ -31,30 +31,21 @@ def plot_distplot(series, xlim=None, ylim=None, bins=100):
     fig.show()
 
 
-def plot_distances(df):
+def plot_comparison(df, col):
     """
-    Plot distances between user residence and the pick-up location
+    Plot comparison between cancelled and not cancelled for a given column
     """
     mask = df["cancelled"] == 1
-    finished_mean = df["distance_to_pickup"][~mask].mean()
-    cancelled_mean = df["distance_to_pickup"][mask].mean()
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(14, 14))
-    ax1.hist(df["distance_to_pickup"][~mask], bins=20)
-    ax1.vlines(finished_mean, 0, 1750, label="Mean: {:,.0f}".format(finished_mean))
-    ax2.set_title("Cancelled Rides")
-    ax2.hist(df["distance_to_pickup"][mask], bins=20, color="r")
-    ax2.vlines(cancelled_mean, 0, 550, label="Mean: {:,.0f}".format(cancelled_mean))
-    ax1.set_title("Finished Rides", fontsize=16)
-    ax2.set_title("Cancelled Rides", fontsize=16)
-    ax1.set_xlabel("Distance to Pickup Location", fontsize=12)
-    ax2.set_xlabel("Distance to Pickup Location", fontsize=12)
-    ax1.set_ylabel("Frequency", fontsize=12)
-    ax2.set_ylabel("Frequency", fontsize=12)
-    ax1.set_xlim((0, 3000))
-    ax2.set_xlim((0, 3000))
-    ax1.legend()
-    ax2.legend()
-    fig.savefig("../images/distance_to_pickup.png")
+    finished = df[col][~mask].mean()
+    cancelled = df[col][mask].mean()
+    fig, ax = plt.subplots(figsize=(8, 8))
+    ax.hist([df[col][~mask], df[col][mask]], color=["b", "r"], bins=25)
+    ax.axvline(finished, linestyle='dashed', label="Finished Rides Mean: {:,.0f}".format(finished))
+    ax.axvline(cancelled, color="r", linestyle='dashed', label="Cancelled Rides Mean: {:,.0f}".format(cancelled))
+    ax.set_title(col.title().replace("_", " "), fontsize=16)
+    ax.set_ylabel("Frequency", fontsize=14)
+    ax.legend(fontsize=14)
+    fig.savefig("../images/{}.png".format(col))
 
 
 def plot_feature_importances(df, feature_importances):
@@ -120,7 +111,7 @@ def distance_between_coords(row):
     Calculate the distance between coordinates
     """
     if isinstance(row["lat_lng"], list) & isinstance(row["user_lat_lng"], list):
-        return geopy.distance.vincenty(row["lat_lng"], row["user_lat_lng"]).miles
+        return vincenty(row["lat_lng"], row["user_lat_lng"]).miles
 
 
 def distance_between_coords2(row):
@@ -129,7 +120,7 @@ def distance_between_coords2(row):
     """
     residence_lat_lng = [row["latitude"], row["longitude"]]
     if isinstance(row["lat_lng"], list) & isinstance(residence_lat_lng, list):
-        return geopy.distance.vincenty(row["lat_lng"], residence_lat_lng).miles
+        return vincenty(row["lat_lng"], residence_lat_lng).miles
 
 
 def get_past_ride_cnt(df, y):
