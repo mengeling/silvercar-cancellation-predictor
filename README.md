@@ -1,5 +1,6 @@
-# ![Silvercar Logo](/app/static/img/silvercar_logo.png) Cancellation Predictor
+# Rental Car Cancellation Predictor
 
+![Silvercar Logo](/images/image.png)
 
 ## Web Application
 
