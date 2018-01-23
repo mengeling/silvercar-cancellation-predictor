@@ -1,16 +1,8 @@
 # Rental Car Cancellation Predictor
 
+&nbsp;
 ![Silvercar Logo](/images/image.jpg)
-
-## Web Application
-
-I made a prototype of a dashboard that could be used to monitor the expected number of rental car cancellations
-for each of Silvercar's locations. The new reservation page allows users to change different reservation features
-to see how it affects the cancellation probability. Try it out here:
-
-http://54.208.25.214/
-
-http://54.208.25.214/new-reservation/
+&nbsp;
 
 
 ## Background and Motivation
@@ -37,11 +29,13 @@ I set out to create a model that could predict which reservations will be cancel
 ## Results
 
 I achieved 80% accuracy, 84% precision, and 63% recall using XGBoost's implementation
-of a gradient boosting classifier.
+of a gradient boosting classifier. The confusion matrix in figure 1 shows the number of correctly and incorrectly
+labeled cancellations and finished rides.
 
 &nbsp;
 &nbsp;
 ![Confusion Matrix 1](/images/confusion_matrix.png)
+*Figure 1: Confusion matrix for 0.5 threshold*
 &nbsp;
 &nbsp;
 
@@ -58,16 +52,18 @@ informing Silvercar that they need to have more cars available.
 
 Because of these conflicting interests, I propose that Silvercar should use one threshold for
 revenue forecasting and another for fleet management. For revenue forecasting, I lowered the
-threshold to 0.35 and increased recall to 77%. At that threshold, accuracy came down to 78% and
-precision came down to 72%.
+threshold to 0.35 and increased recall to 77% as you can see in the increased number of correctly
+labeled cancellations in figure 2. At that threshold, accuracy came down to 78% and
+precision came down to 72% as you can see in the .
 
 &nbsp;
 &nbsp;
 ![Confusion Matrix 2](/images/confusion_matrix2.png)
+*Figure 2: Confusion matrix for 0.35 threshold*
 &nbsp;
 &nbsp;
 
-As for opportunities to prevent cancellations, the features below are the most important features
+As for opportunities to prevent cancellations, figure 3 below illustrates the most important features
 according to the final model. Unsurprisingly most of the features are out of Silvercar's control,
 but users are less likely to cancel when applying promo codes to their reservations. We would need
 to conduct cost-benefit analysis, but offering promotions to users that are more likely to cancel
@@ -84,3 +80,16 @@ based off of the various cancellation reasons.
 &nbsp;
 &nbsp;
 ![Feature Importances](/images/feature_importances.png)
+*Figure 3: Feature Importances*
+&nbsp;
+&nbsp;
+
+## Web Application
+
+I made a prototype of a dashboard that could be used to monitor the expected number of cancellations
+for each of Silvercar's locations. The new reservation page allows users to change different reservation features
+to see how it affects the cancellation probability. Try it out here:
+
+http://54.208.25.214/
+
+http://54.208.25.214/new-reservation/

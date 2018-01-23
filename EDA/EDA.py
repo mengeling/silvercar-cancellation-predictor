@@ -73,10 +73,10 @@ def plot_confusion_matrix(cm):
     plt.xticks(np.arange(2), ["Cancelled", "Finished"])
     plt.yticks(np.arange(2), ["Cancelled", "Finished"])
     for i, j in product(range(cm.shape[0]), range(cm.shape[1])):
-        plt.text(j, i, format(cm[i, j], 'd'), horizontalalignment="center",
+        plt.text(j, i, "{:,.0f}".format(cm[i, j]), horizontalalignment="center",
                  color="white" if cm[i, j] > cm.max() / 2 else "black")
-    plt.xlabel('True label')
-    plt.ylabel('Predicted label')
+    plt.xlabel('True Class')
+    plt.ylabel('Predicted Class')
     plt.show()
 
 
