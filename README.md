@@ -35,11 +35,11 @@ labeled cancellations and finished rides.
 
 
 &nbsp;
-&nbsp;
+
 ![Confusion Matrix 1](/images/confusion_matrix.png)
 
-*Figure 1: Confusion matrix for 0.5 threshold*
-&nbsp;
+**Figure 1: Confusion matrix for 0.5 threshold**
+
 &nbsp;
 
 
@@ -62,11 +62,11 @@ precision came down to 72% as you can see in the .
 
 
 &nbsp;
-&nbsp;
+
 ![Confusion Matrix 2](/images/confusion_matrix2.png)
 
-*Figure 2: Confusion matrix for 0.35 threshold*
-&nbsp;
+**Figure 2: Confusion matrix for 0.35 threshold**
+
 &nbsp;
 
 
@@ -84,15 +84,13 @@ because the model wouldn't have to make as many predictions.
 Silvercar could also start to send out cancellation surveys, so they could segment the cancellations
 based off of the various cancellation reasons.
 
+&nbsp;
 
-&nbsp;
-&nbsp;
 ![Feature Importances](/images/feature_importances.png)
 
-*Figure 3: Feature Importances*
-&nbsp;
-&nbsp;
+**Figure 3: Feature Importances**
 
+&nbsp;
 
 ## Web Application
 
