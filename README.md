@@ -1,10 +1,9 @@
-# Silvercar Cancellation Predictor
-
-&nbsp;
-&nbsp;
 ![Silvercar Logo](/images/logo.png)
 &nbsp;
 &nbsp;
+
+# Silvercar Cancellation Predictor
+
 
 ## Web Application
 
@@ -89,7 +88,7 @@ based off of the various cancellation reasons.
 
 &nbsp;
 &nbsp;
-![Feature Importances](/images/xgboost_feature_importances.png)
+![Feature Importances](/images/feature_importances.png)
 &nbsp;
 &nbsp;
 
