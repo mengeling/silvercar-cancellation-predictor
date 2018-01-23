@@ -1,8 +1,8 @@
-![Silvercar Logo](/images/logo.png)
+
 &nbsp;
 &nbsp;
 
-# Silvercar Cancellation Predictor
+# Silvercar Cancellation Predictor ![Silvercar Logo](/images/logo.png)
 
 
 ## Web Application
