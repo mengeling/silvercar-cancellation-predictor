@@ -6,7 +6,6 @@
 &nbsp;
 
 [Click Here to Try the App!](http://54.208.25.214/)
-
 <br>
 
 ## Background and Motivation
