@@ -37,13 +37,13 @@ labeled cancellations and finished rides.
 &nbsp;
 
 ![Confusion Matrix 1](/images/confusion_matrix.png)
-
-**Figure 1: Confusion matrix for 0.5 threshold**
+&nbsp;
+**Figure 1**
 
 &nbsp;
 
 
-In this case, I'm using a 0.5 threshold to make predictions, which means that if my model calculates
+In figure 1, I'm using a 0.5 threshold to make predictions, which means that if my model calculates
 the probability of a cancellation is greater than 50%, then it predicts the reservation will be cancelled.
 The recall (the number of correctly identified cancellations divided
 by the number of actual cancellations) is only 63%, which could be problematic for
@@ -58,14 +58,14 @@ Because of these conflicting interests, I propose that Silvercar should use one 
 revenue forecasting and another for fleet management. For revenue forecasting, I lowered the
 threshold to 0.35 and increased recall to 77% as you can see in the increased number of correctly
 labeled cancellations in figure 2. At that threshold, accuracy came down to 78% and
-precision came down to 72% as you can see in the .
+precision came down to 72%.
 
 
 &nbsp;
 
 ![Confusion Matrix 2](/images/confusion_matrix2.png)
-
-**Figure 2: Confusion matrix for 0.35 threshold**
+&nbsp;
+**Figure 2**
 
 &nbsp;
 
@@ -87,8 +87,8 @@ based off of the various cancellation reasons.
 &nbsp;
 
 ![Feature Importances](/images/feature_importances.png)
-
-**Figure 3: Feature Importances**
+&nbsp;
+**Figure 3**
 
 &nbsp;
 
