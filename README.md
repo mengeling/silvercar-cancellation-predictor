@@ -5,7 +5,7 @@
 ![Silvercar Logo](/images/image.jpg)
 &nbsp;
 
-[Click Here to Try the App!](http://54.208.25.214/)
+[Click Here To Try The App!](http://54.208.25.214/)
 <br>
 
 ## Background and Motivation
