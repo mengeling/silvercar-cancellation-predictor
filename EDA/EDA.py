@@ -36,13 +36,15 @@ def plot_comparison(df, col):
     Plot comparison between cancelled and not cancelled for a given column
     """
     mask = df["cancelled"] == 1
+    title = col.title().replace("_", " ")
     finished = df[col][~mask].mean()
     cancelled = df[col][mask].mean()
     fig, ax = plt.subplots(figsize=(8, 8))
     ax.hist([df[col][~mask], df[col][mask]], color=["b", "r"], bins=25)
     ax.axvline(finished, linestyle='dashed', label="Finished Rides Mean: {:,.0f}".format(finished))
     ax.axvline(cancelled, color="r", linestyle='dashed', label="Cancelled Rides Mean: {:,.0f}".format(cancelled))
-    ax.set_title(col.title().replace("_", " "), fontsize=16)
+    ax.set_title(title, fontsize=16)
+    ax.set_xlabel(title, fontsize=14)
     ax.set_ylabel("Frequency", fontsize=14)
     ax.legend(fontsize=14)
     fig.savefig("../images/{}.png".format(col))
