@@ -1,5 +1,6 @@
 # Rental Car Cancellation Predictor
 
+
 &nbsp;
 ![Silvercar Logo](/images/image.jpg)
 &nbsp;
@@ -32,12 +33,15 @@ I achieved 80% accuracy, 84% precision, and 63% recall using XGBoost's implement
 of a gradient boosting classifier. The confusion matrix in figure 1 shows the number of correctly and incorrectly
 labeled cancellations and finished rides.
 
+
 &nbsp;
 &nbsp;
 ![Confusion Matrix 1](/images/confusion_matrix.png)
+
 *Figure 1: Confusion matrix for 0.5 threshold*
 &nbsp;
 &nbsp;
+
 
 In this case, I'm using a 0.5 threshold to make predictions, which means that if my model calculates
 the probability of a cancellation is greater than 50%, then it predicts the reservation will be cancelled.
@@ -56,12 +60,15 @@ threshold to 0.35 and increased recall to 77% as you can see in the increased nu
 labeled cancellations in figure 2. At that threshold, accuracy came down to 78% and
 precision came down to 72% as you can see in the .
 
+
 &nbsp;
 &nbsp;
 ![Confusion Matrix 2](/images/confusion_matrix2.png)
+
 *Figure 2: Confusion matrix for 0.35 threshold*
 &nbsp;
 &nbsp;
+
 
 As for opportunities to prevent cancellations, figure 3 below illustrates the most important features
 according to the final model. Unsurprisingly most of the features are out of Silvercar's control,
@@ -77,12 +84,15 @@ because the model wouldn't have to make as many predictions.
 Silvercar could also start to send out cancellation surveys, so they could segment the cancellations
 based off of the various cancellation reasons.
 
+
 &nbsp;
 &nbsp;
 ![Feature Importances](/images/feature_importances.png)
+
 *Figure 3: Feature Importances*
 &nbsp;
 &nbsp;
+
 
 ## Web Application
 
