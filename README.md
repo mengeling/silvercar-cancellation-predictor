@@ -1,7 +1,9 @@
 # Silvercar Cancellation Predictor
 
 &nbsp;
+&nbsp;
 ![Silvercar Logo](/images/logo.png)
+&nbsp;
 &nbsp;
 
 ## Web Application
@@ -44,7 +46,9 @@ I achieved 80% accuracy, 84% precision, and 63% recall using XGBoost's implement
 of a gradient boosting classifier.
 
 &nbsp;
+&nbsp;
 ![Confusion Matrix 1](/images/confusion_matrix.png)
+&nbsp;
 &nbsp;
 
 In this case, I'm using a 0.5 threshold to make predictions, which means that if my model calculates
@@ -64,7 +68,9 @@ threshold to 0.35 and increased recall to 77%. At that threshold, accuracy came 
 precision came down to 72%.
 
 &nbsp;
+&nbsp;
 ![Confusion Matrix 2](/images/confusion_matrix2.png)
+&nbsp;
 &nbsp;
 
 As for opportunities to prevent cancellations, the features below are the most important features
@@ -82,9 +88,10 @@ Silvercar could also start to send out cancellation surveys, so they could segme
 based off of the various cancellation reasons.
 
 &nbsp;
+&nbsp;
 ![Feature Importances](/images/xgboost_feature_importances.png)
 &nbsp;
-
+&nbsp;
 
 ## Future Enhancements
 
