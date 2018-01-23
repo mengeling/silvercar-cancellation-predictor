@@ -1,17 +1,11 @@
-
-&nbsp;
-&nbsp;
-
-# Silvercar Cancellation Predictor ![Silvercar Logo](/images/logo.png)
+# ![Silvercar Logo](/app/static/img/silvercar_logo.png) Cancellation Predictor
 
 
 ## Web Application
 
 I made a prototype of a dashboard that could be used to monitor the expected number of rental car cancellations
 for each of Silvercar's locations. The new reservation page allows users to change different reservation features
-to see how it affects the cancellation probability.
-
-Try it out here:
+to see how it affects the cancellation probability. Try it out here:
 
 http://54.208.25.214/
 
@@ -27,7 +21,7 @@ so they have a number of different user-friendly policies:
 - Users don't have to create a Silvercar account to reserve a car
 - Users don't have to enter credit card information to reserve a car
 
-These policies gives customers a lot of flexibility, but it creates a business problem because
+These policies gives customers a lot of flexibility, but it's a business problem because
 roughly 41% of their reservations aren't completed.
 
 
@@ -89,10 +83,3 @@ based off of the various cancellation reasons.
 &nbsp;
 &nbsp;
 ![Feature Importances](/images/feature_importances.png)
-&nbsp;
-&nbsp;
-
-## Future Enhancements
-
-I wasn't able to use most of the user data I received because there would've been data leakage.
-In the future, I would like to find a way to incorporate more user data into the model. 
