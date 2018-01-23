@@ -57,7 +57,10 @@ def plot_feature_importances(df, feature_importances):
     feat_scores = pd.DataFrame({'Feature Importances': feature_importances},
                            index=df.columns)
     feat_scores = feat_scores.sort_values(by='Feature Importances')
-    feat_scores.plot(kind='barh', figsize=(8,8))
+    fig, ax = plt.subplots()
+    feat_scores.plot(kind='barh', figsize=(8, 8), ax=ax)
+    ax.set_xlabel("Relative Importance")
+    ax.legend(loc=4)
 
 
 def plot_confusion_matrix(cm):
