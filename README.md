@@ -15,20 +15,17 @@ so they have a number of different user-friendly policies:
 - Users don't have to create a Silvercar account to reserve a car
 - Users don't have to enter credit card information to reserve a car
 
-These policies gives customers a lot of flexibility, but they have created a business problem because
+These policies give customers a lot of flexibility, but they've created a business problem because
 roughly 41% of their reservations aren't completed.
 
 
 ## Objective
 
 I set out to create a model that can predict the reservations that will be cancelled to help Silvercar:
-- Better manage their fleet of cars (less cars sitting around unused)
+- Better manage their fleet of cars at each location
 - Improve short-term revenue forecasting
 - Potentially identify opportunities to prevent cancellations
 
-## Data Analysis and Model Building
-
-Please consult the notebooks in the [EDA](/EDA) folder to see how I chose my features and created my model.
 
 ## Results
 
@@ -55,11 +52,11 @@ Conversely, the lower number of predicted cancellations is good from a fleet man
 because the model is being more conservative by predicting more rides will be finished and thus
 informing Silvercar that they need to have more cars available.
 
-Because of these conflicting interests, I propose that Silvercar should use one threshold for
+Because of these conflicting interests, I propose that Silvercar uses one threshold for
 revenue forecasting and another for fleet management. For revenue forecasting, I lowered the
 threshold to 0.35 and increased recall to 77% as you can see in the increased number of correctly
-labeled cancellations in figure 2. At that threshold, accuracy came down to 78% and
-precision came down to 72%.
+labeled cancellations in figure 2. At that threshold, accuracy was 78% and
+precision was 72%.
 
 
 &nbsp;
@@ -78,8 +75,8 @@ users that are more likely to cancel could yield positive results.
 Silvercar tries to bother its customers as little as possible, but they could start to send their
 customers email reminders for upcoming trips that ask the customers to confirm or cancel their
 reservation. This wouldn't necessarily reduce cancellations, but it could complement the model well.
-Silvercar would have more notice of the cancellations, and the model wouldn't have to make
-as many predictions.
+Silvercar would have more notice of the cancellations, and they wouldn't need to rely on the model
+for as many predictions.
 
 Silvercar could also start to send out cancellation surveys, so they could segment the cancellations
 based off of the various cancellation reasons.
