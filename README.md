@@ -1,8 +1,21 @@
 # Silvercar Cancellation Predictor
 
+&nbsp;
+![Silvercar Logo](/images/silvercar_logo.png)
+&nbsp;
+
 ## Web Application
 
+I made a prototype of a dashboard that could be used to monitor the expected number of rental car cancellations
+for each of Silvercar's locations. The new reservation page allows users to change different reservation features
+to see how it affects the cancellation probability.
+
+Try it out here:
+
 http://54.208.25.214/
+
+http://54.208.25.214/new-reservation/
+
 
 ## Background and Motivation
 
@@ -16,6 +29,7 @@ so they have a number of different user-friendly policies:
 These policies gives customers a lot of flexibility, but it creates a business problem because
 roughly 41% of their reservations aren't completed.
 
+
 ## Objective
 
 I set out to create a model that could predict which reservations will be cancelled to help Silvercar:
@@ -23,12 +37,15 @@ I set out to create a model that could predict which reservations will be cancel
 - Improve short-term revenue forecasting
 - Potentially identify opportunities to prevent cancellations
 
+
 ## Results
 
 I achieved 80% accuracy, 84% precision, and 63% recall using XGBoost's implementation
 of a gradient boosting classifier.
 
+&nbsp;
 ![Confusion Matrix 1](/images/confusion_matrix.png)
+&nbsp;
 
 In this case, I'm using a 0.5 threshold to make predictions, which means that if my model calculates
 the probability of a cancellation is greater than 50%, then it predicts the reservation will be cancelled.
@@ -46,9 +63,9 @@ revenue forecasting and another for fleet management. For revenue forecasting, I
 threshold to 0.35 and increased recall to 77%. At that threshold, accuracy came down to 78% and
 precision came down to 72%.
 
-
+&nbsp;
 ![Confusion Matrix 2](/images/confusion_matrix2.png)
-
+&nbsp;
 
 As for opportunities to prevent cancellations, the features below are the most important features
 according to the final model. Unsurprisingly most of the features are out of Silvercar's control,
@@ -64,8 +81,9 @@ because the model wouldn't have to make as many predictions.
 Silvercar could also start to send out cancellation surveys, so they could segment the cancellations
 based off of the various cancellation reasons.
 
-
+&nbsp;
 ![Feature Importances](/images/xgboost_feature_importances.png)
+&nbsp;
 
 
 ## Future Enhancements
