@@ -37,7 +37,7 @@ labeled cancellations and finished rides.
 &nbsp;
 
 ![Confusion Matrix 1](/images/confusion_matrix.png)
-&nbsp;
+
 **Figure 1**
 
 &nbsp;
@@ -64,7 +64,7 @@ precision came down to 72%.
 &nbsp;
 
 ![Confusion Matrix 2](/images/confusion_matrix2.png)
-&nbsp;
+
 **Figure 2**
 
 &nbsp;
@@ -87,7 +87,7 @@ based off of the various cancellation reasons.
 &nbsp;
 
 ![Feature Importances](/images/feature_importances.png)
-&nbsp;
+
 **Figure 3**
 
 &nbsp;
