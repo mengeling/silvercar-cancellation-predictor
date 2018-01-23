@@ -67,7 +67,7 @@ def plot_confusion_matrix(cm):
     plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
     plt.title("Confusion Matrix")
     plt.colorbar()
-    plt.xticks(np.arange(2), ["Cancelled", "Finished"], rotation=45)
+    plt.xticks(np.arange(2), ["Cancelled", "Finished"])
     plt.yticks(np.arange(2), ["Cancelled", "Finished"])
     for i, j in product(range(cm.shape[0]), range(cm.shape[1])):
         plt.text(j, i, format(cm[i, j], 'd'), horizontalalignment="center",
