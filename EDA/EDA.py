@@ -77,7 +77,7 @@ def plot_confusion_matrix(cm):
     plt.show()
 
 
-def plot_roc_curve(fpr, tpr, thresholds, auc):
+def plot_roc_curve(fpr, tpr, auc):
     """
     Plot ROC curve - stolen from sklearn's example
     """
