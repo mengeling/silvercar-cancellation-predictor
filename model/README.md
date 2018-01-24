@@ -1,5 +1,3 @@
-# Model Files
-
 ## model.py
 
 **model.py** contains the custom model, **CancellationModel**, and **get_data**, a function that retrieves the data from

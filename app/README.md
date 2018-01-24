@@ -1,5 +1,3 @@
-# App Files
-
 ## __init__.py
 
 **__init__.py** contains all of the routes for my Flask application. When you run the app, the **booked** table

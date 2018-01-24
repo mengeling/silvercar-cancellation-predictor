@@ -1,5 +1,3 @@
-# EDA Files
-
 ## EDA.py
 
 **EDA.py** contains all of the helper functions that are used in the notebooks, so that the notebooks aren't cluttered
