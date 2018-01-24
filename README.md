@@ -29,12 +29,37 @@ I set out to create a model that can predict the reservations that will be cance
 - Potentially identify opportunities to prevent cancellations
 
 
+## MOE (Measure of Effectiveness)
+
+I chose accuracy as my MOE because the classes are balanced (59% finished and 41% cancelled), and it's interpretable.
+With that said, I also used precision and recall to evaluate the models because they're both important
+for accomplishing my first two objectives. I didn't use the F1 score though because I was looking for good precision
+and good recall, not just a good average of the two (which is roughly what an F1 score calculates).
+
+In this case, precision is the number of correctly identified cancellations divided by the number of predicted cancellations.
+This is an important metric for fleet management because the number of incorrectly labeled cancellations need
+to be minimized. If too many rides are incorrectly predicted to be cancelled, then the model could be informing Silvercar
+that they don't need as many cars available as they actually do.
+
+Recall is the number of correctly identified cancellations divided by the number of actual cancellations. If recall is too low
+(i.e. the model isn't predicting enough cancellations), then the second objective won't be accomplished because revenue
+will be overstated.
+
+
+## MOP (Measure of Performance)
+
+The **reservations** table has about 460,000 rows, so I didn't have to worry about memory, storage,
+or training time. All of the data can be stored on a local machine, and all of it can be loaded into memory. Every night,
+Silvercar could easily train the model on all of the historical reservations and make predictions on the booked
+reservations.
+
+
 ## Results
 
-I achieved 80% accuracy, 84% precision, and 63% recall using XGBoost's implementation
-of a gradient boosting classifier. The confusion matrix in figure 1 shows the number of correctly and incorrectly
-labeled cancellations and finished rides.
-
+Using a 50% threshold (meaning the model predicts a cancellation when the cancellation probability is greater than 50%),
+I achieved 80% accuracy, 84% precision, and 63% recall using XGBoost's implementation of a gradient boosting classifier.
+As you can see in figure 1, the model is predicting a lot less cancellations than there actually were, which is why
+recall is only 63%. This is problematic for revenue forecasting.
 
 &nbsp;
 
@@ -43,23 +68,11 @@ labeled cancellations and finished rides.
 &nbsp;
 
 
-In figure 1, I'm using a 0.5 threshold to make predictions, which means that if the cancellation probability
-is greater than 50%, then the model predicts the reservation will be cancelled.
-The recall (the number of correctly identified cancellations divided
-by the number of actual cancellations) is only 63%, which could be problematic for
-revenue forecasting because at the 0.5 threshold, the model is predicting less cancellations than there actually were.
-If the model isn't predicting enough cancellations, then the predicted revenue would be overstated.
-
-Conversely, the lower number of predicted cancellations is good from a fleet management perspective
-because the model is being more conservative by predicting more rides will be finished and thus
-informing Silvercar that they need to have more cars available.
-
-Because of these conflicting interests, I propose that Silvercar uses one threshold for
-revenue forecasting and another for fleet management. For revenue forecasting, I lowered the
-threshold to 0.35 and increased recall to 77% as you can see in the increased number of correctly
-labeled cancellations in figure 2. At that threshold, accuracy was 78% and
-precision was 72%.
-
+I lowered the threshold to 40%, which resulted in 79% accuracy, 75% precision, and 72% recall.
+This threshold gives a more even distribution of inaccurate predictions. Silvercar could take these predictions
+and make more conservative estimates to calculate their revenue forecasts and determine the number of cars needed
+at each location. I think coupling these predictions with historical data will prove to be more effective than solely
+basing their projections on historical data.
 
 &nbsp;
 
