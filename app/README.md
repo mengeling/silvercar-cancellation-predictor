@@ -9,7 +9,7 @@ passed to the **index.html** file to be rendered. When a user changes a drop-dow
 to **/get_df_subset/** which slices the data frame on the particular month and location. The data is then sent back
 to jQuery, which changes the elements without rendering the page again.
 
-When a user goes to the [new reservation page](http://54.208.25.214/new_reservation/), the **new_reservations.html** file
+When a user goes to the [new reservation page](http://54.208.25.214/new-reservation/), the **new_reservations.html** file
 is rendered. When any of the fields on the form are changed, an AJAX request is sent to **/calculate_probability/**
 which takes the inputs of the form and calculates the cancellation probability. The probability, prediction, and price
 of the reservation are sent back to be displayed on the top of the page.
@@ -24,7 +24,7 @@ This HTML file is rendered when users go to the app's index page, http://54.208.
 
 ## templates/new_reservation.html
 
-This HTML file is rendered when users go to the new reservation page, http://54.208.25.214/new_reservation/
+This HTML file is rendered when users go to the new reservation page, http://54.208.25.214/new-reservation/
 
 <br>
 
