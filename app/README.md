@@ -1,6 +1,6 @@
 ## __init__.py
 
-**__init__.py** contains all of the routes for my Flask application. When you run the app, the **booked** table
+This script contains all of the routes for the Flask application. When you run the app, the **booked** table
 is retrieved from the PostgreSQL database, and the model is loaded from the **model.pkl** file. The data is sorted on
 the probabilities, and the summary statistics are calculated.
 
@@ -11,21 +11,29 @@ without rendering the page again.
 
 When a user goes to the "/new-reservation/" page, the **new_reservations.html** file is rendered. When any of the fields
 on the form are changed, an AJAX request is sent to "/calculate_probability/" which takes the inputs of the form and
-calculate the cancellation probability. The probability, prediction, and price of the reservation are sent back, and the
-stats at the top of the page are updated.
+calculates the cancellation probability. The probability, prediction, and price of the reservation are sent back to be
+displayed on the top of the page.
+
+<br>
 
 ## templates/index.html
 
-**index.html** is the HTML file that is rendered when users go to the app's index page ("/").
+This HTML file is rendered when users go to the app's index page ("/").
+
+<br>
 
 ## templates/new_reservation.html
 
-**index.html** is the HTML file that is rendered when users go to the "/new-reservation/" page.
+This HTML file is rendered when users go to the "/new-reservation/" page.
+
+<br>
 
 ## static/js/app.js
 
-**app.js** is a JavaScript script for the two AJAX requests discussed above.
+This JavaScript script contains the two AJAX requests discussed above.
+
+<br>
 
 ## static/css/styles.css
 
-**styles.css** contains all of the styling for the two HTML pages.
+This stylesheet contains all of the styling for the two HTML pages.
