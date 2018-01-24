@@ -44,4 +44,4 @@ This stylesheet contains all of the styling for the two HTML pages.
 
 <br>
 
-![New Reservation Page](/../images/app_new_reservation.png)
+![New Reservation Page](/images/app_new_reservation.png)
