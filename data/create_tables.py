@@ -7,7 +7,7 @@ sys.path.append('../model')
 import constants as C
 
 
-def write_zips_to_sql():
+def write_zip_codes_to_sql():
     """
     Write the zip codes text file to Postgres
     """
@@ -31,4 +31,4 @@ if __name__ == '__main__':
     for f in os.listdir('.'):
         if f.endswith(".csv"):
             write_csvs_to_sql(f)
-    write_zips_to_sql()
+    write_zip_codes_to_sql()
