@@ -5,7 +5,7 @@
 ![Silvercar Logo](/images/silvercar_cars.jpg)
 &nbsp;
 
-[Click Here To Try The App!](54.208.25.214/)
+[Click Here To Try The App!](http://54.208.25.214/)
 <br>
 
 ## Background and Motivation
@@ -95,6 +95,6 @@ I made a prototype of a dashboard that can be used to monitor the expected numbe
 for each of Silvercar's locations. The new reservation page allows users to change different reservation features
 to see how it affects the cancellation probability. Try it out here:
 
-54.208.25.214/
+http://54.208.25.214/
 
-54.208.25.214/new-reservation/
+http://54.208.25.214/new-reservation/
