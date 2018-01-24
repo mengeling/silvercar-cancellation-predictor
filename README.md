@@ -2,7 +2,7 @@
 
 
 &nbsp;
-![Silvercar Logo](/images/image.jpg)
+![Silvercar Logo](/images/silvercar_cars.jpg)
 &nbsp;
 
 [Click Here To Try The App!](http://54.208.25.214/)
