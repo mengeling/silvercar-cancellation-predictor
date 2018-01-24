@@ -40,7 +40,7 @@ This stylesheet contains all of the styling for the two HTML pages.
 
 <br>
 
-![Index Page](/../images/app_index.png)
+![Index Page](/images/app_index.png)
 
 <br>
 
