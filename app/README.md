@@ -37,11 +37,3 @@ This JavaScript script contains the two AJAX requests discussed above.
 ## static/css/styles.css
 
 This stylesheet contains all of the styling for the two HTML pages.
-
-<br>
-
-![Index Page](/images/app_index.png)
-
-<br>
-
-![New Reservation Page](/images/app_new_reservation.png)
