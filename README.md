@@ -31,10 +31,11 @@ I set out to create a model that can predict the reservations that will be cance
 
 ## MOEs (Measures of Effectiveness)
 
-I chose accuracy as my main MOE because the classes are balanced (59% finished and 41% cancelled), and it's interpretable.
-With that said, I also used precision and recall to evaluate the models because they're both important
-for accomplishing my first two objectives. I chose not to use the F1 score alone though because I was looking for good precision
-and good recall, not just a good average of the two (which is roughly what the F1 score calculates).
+I chose accuracy as my main MOE because the classes are pretty balanced (59% finished and 41% cancelled), and
+it's interpretable. With that said, I also used precision and recall to evaluate the models because they're both
+important for accomplishing my first two objectives. I chose not to use the F1 score alone though because I was
+looking for good precision and good recall, not just a good average of the two (which is roughly what the F1 score
+calculates).
 
 In this case, precision is the number of correctly identified cancellations divided by the number of predicted cancellations.
 This is an important metric for fleet management because the number of incorrectly labeled cancellations need
