@@ -113,8 +113,8 @@ http://54.208.25.214/
 
 http://54.208.25.214/new-reservation/
 
-<br>
-<br>
+
+## Footnotes
 
 <a name="footnote1">1</a>: Gradient boosting classifiers have misleading feature importances when
 categorical and numerical features are mixed. In this case, the numerical features are weighted more heavily
