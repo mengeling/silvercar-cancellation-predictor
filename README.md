@@ -57,9 +57,9 @@ on the booked reservations.
 
 ## Results
 
-Using a 50% threshold for predicting cancellations (meaning the model predicts a cancellation when the cancellation probability is greater than 50%),
+Using a 50% threshold for predicting cancellations (meaning a cancellation is predicted when the cancellation probability is greater than 50%),
 I achieved 80% accuracy, 84% precision, and 63% recall using XGBoost's implementation of a gradient boosting classifier.
-As you can see in figure 1, the model is predicting a lot less cancellations than there actually were, which is why
+As you can see in figure 1, the model is predicting significantly less cancellations than there actually were, which is why
 recall is only 63%. This is problematic for revenue forecasting.
 
 &nbsp;
@@ -83,7 +83,7 @@ basing their projections on historical data.
 
 
 As for opportunities to prevent cancellations, figure 3 below illustrates the most important features
-according to the final model. Unsurprisingly most of the features are out of Silvercar's control,
+according to the final model<sup>[1](#footnote1)</sup>. Unsurprisingly most of the features are out of Silvercar's control,
 but promotions could be useful because users are less likely to cancel when applying promo codes
 to their reservations. We would need to conduct cost-benefit analysis, but offering promotions to
 users that are more likely to cancel could yield positive results.
@@ -112,3 +112,11 @@ to see how it affects the cancellation probability. Try it out here:
 http://54.208.25.214/
 
 http://54.208.25.214/new-reservation/
+
+<br>
+<br>
+
+<a name="footnote1">1</a>: Gradient boosting classifiers have misleading feature importances when
+categorical and numerical features are mixed. In this case, the numerical features are weighted more heavily
+even though all of the features were standardized. Feature importances have to be evaluated separately for the
+numerical and categorical features.
