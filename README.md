@@ -79,6 +79,10 @@ basing their projections on historical data.
 
 ![Confusion Matrix 2](/images/confusion_matrix2.png)<br>**Figure 2**
 
+<br>
+
+![Roc Curve](/images/roc_curve.png)<br>**Figure 3**
+
 &nbsp;
 
 
@@ -99,7 +103,7 @@ based off of the various cancellation reasons.
 
 &nbsp;
 
-![Feature Importances](/images/feature_importances.png)<br>**Figure 3**
+![Feature Importances](/images/feature_importances.png)<br>**Figure 4**
 
 &nbsp;
 

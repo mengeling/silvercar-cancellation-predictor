@@ -80,7 +80,7 @@ def plot_confusion_matrix(cm):
     plt.show()
 
 
-def plot_roc_curve(fpr, tpr, auc):
+def plot_roc_curve(fpr, tpr, thresholds, auc):
     """
     Plot ROC curve - stolen from sklearn's example
     """
@@ -90,6 +90,10 @@ def plot_roc_curve(fpr, tpr, auc):
     plt.ylim([0.0, 1.05])
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
+    i1 = np.abs(thresholds - 0.5).argmin()
+    i2 = np.abs(thresholds - 0.4).argmin()
+    plt.annotate("50% Threshold", xy=(fpr[i1], tpr[i1]), xytext=(0.02, 0.9), arrowprops={"arrowstyle": "->"})
+    plt.annotate("40% Threshold", xy=(fpr[i2], tpr[i2]), xytext=(0.2, 0.6), arrowprops={"arrowstyle": "->"})
     plt.title('ROC Curve')
     plt.legend(loc="lower right")
     plt.show()
