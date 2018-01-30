@@ -87,7 +87,7 @@ basing their projections on historical data.
 &nbsp;
 
 
-As for opportunities to prevent cancellations, figure 3 below illustrates the most important features
+As for opportunities to prevent cancellations, figure 4 below illustrates the most important features
 according to the final model.<sup>[1](#footnote1)</sup> Unsurprisingly most of the features are out of Silvercar's control,
 but promotions could be useful because users are less likely to cancel when applying promo codes
 to their reservations. We would need to conduct cost-benefit analysis, but offering promotions to
