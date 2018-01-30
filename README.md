@@ -80,6 +80,7 @@ basing their projections on historical data.
 ![Confusion Matrix 2](/images/confusion_matrix2.png)<br>**Figure 2**
 
 <br>
+<br>
 
 ![Roc Curve](/images/roc_curve.png)<br>**Figure 3**
 

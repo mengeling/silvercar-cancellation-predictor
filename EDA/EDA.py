@@ -92,7 +92,7 @@ def plot_roc_curve(fpr, tpr, thresholds, auc):
     plt.ylabel('True Positive Rate')
     i1 = np.abs(thresholds - 0.5).argmin()
     i2 = np.abs(thresholds - 0.4).argmin()
-    plt.annotate("50% Threshold", xy=(fpr[i1], tpr[i1]), xytext=(0.02, 0.9), arrowprops={"arrowstyle": "->"})
+    plt.annotate("50% Threshold", xy=(fpr[i1], tpr[i1]), xytext=(0.05, 0.45), arrowprops={"arrowstyle": "->"})
     plt.annotate("40% Threshold", xy=(fpr[i2], tpr[i2]), xytext=(0.2, 0.6), arrowprops={"arrowstyle": "->"})
     plt.title('ROC Curve')
     plt.legend(loc="lower right")
