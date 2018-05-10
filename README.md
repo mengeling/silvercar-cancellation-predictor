@@ -121,7 +121,4 @@ http://54.208.25.214/new-reservation/
 
 ## Footnotes
 
-<a name="footnote1">1</a>: Gradient boosting classifiers have misleading feature importances when
-categorical and numerical features are mixed. In this case, the numerical features are weighted more heavily
-even though all of the features were standardized. Feature importances have to be evaluated separately for the
-numerical and categorical features.
+<a name="footnote1">1</a>: Gradient boosting classifiers have misleading feature importances when categorical and numerical features are mixed. Even though all of the features were standardized, the numerical features are weighted more heavily because they are continuous, so there are more opportunities for the decision trees to split on them. For categorical features, there are only a handful of possible splits (only 2 for binary features), so feature importances have to be evaluated separately for the numerical and categorical features.
