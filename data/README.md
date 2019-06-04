@@ -1,6 +1,6 @@
 # Data
 
-None of the data has been pushed to this remote repository because all of it is private Silvercar data.
+None of the data has been pushed to this remote repository because all of it is proprietary Silvercar data.
 The AWS EC2 instance that is hosting the app only has access to the **booked** table, which is a sample of 200 old
 reservations, because the table is displayed on the app.
 
