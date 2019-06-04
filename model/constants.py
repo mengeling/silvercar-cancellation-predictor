@@ -1,10 +1,10 @@
-THRESHOLD = 0.4
+THRESHOLD = 0.5
 
 
 DAILY_RATE = 50
 
 
-ENGINE = "postgresql://mengeling:mengeling@localhost:5432/silvercar"
+ENGINE = "postgresql://postgres:silvercar@localhost:5432/silvercar"
 
 
 MODEL_FEATURES_TO_KEEP = ["created_as_guest", "local_rental", "awards_referral_bonus", "is_gds_user",

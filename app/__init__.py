@@ -5,14 +5,14 @@ import pandas as pd
 import sys
 from sqlalchemy import create_engine
 
-sys.path.append('../model')
+sys.path.append('/var/www/capstone/capstone/model')
 import constants as C
 
 app = Flask(__name__)
 
 
 # Load model from pickle file and then retrieve the booked data
-with open('../model/model.pkl', 'rb') as f:
+with open('/var/www/capstone/capstone/model/model.pkl', 'rb') as f:
     model = pickle.load(f)
 engine = create_engine(C.ENGINE)
 df = pd.read_sql_query("SELECT * FROM booked", con=engine)
