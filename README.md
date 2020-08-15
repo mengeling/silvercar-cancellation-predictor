@@ -88,6 +88,7 @@ http://54.208.25.214/
 http://54.208.25.214/new-reservation/
 
 
+### Application Screenshots
 &nbsp;
 ![App Index Screenshot](/images/app_index.png)
 &nbsp;
