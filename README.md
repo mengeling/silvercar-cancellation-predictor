@@ -88,6 +88,15 @@ http://54.208.25.214/
 http://54.208.25.214/new-reservation/
 
 
+&nbsp;
+![App Index Screenshot](/images/app_index.png)
+&nbsp;
+
+&nbsp;
+![App New Reservation Screenshot](/images/app_new_reservation.png)
+&nbsp;
+
+
 ## Footnotes
 
 <a name="footnote1">1</a>. Gradient boosting classifiers, like other tree-based ensembles, have misleading feature importances when categorical and numerical features are mixed. The numerical features are weighted more heavily because they are continuous, so there are more opportunities for the decision trees to split on them. For categorical features, there are only a handful of possible splits (only 1 for binary features), so feature importances have to be evaluated separately for the numerical and categorical features.
