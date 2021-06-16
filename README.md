@@ -88,6 +88,9 @@ http://54.208.25.214/
 http://54.208.25.214/new-reservation/
 
 &nbsp;
+### Application Demo
+![Demo](/images/silvercar_recording.gif)
+&nbsp;
 
 ### Application Screenshots
 ![App Index Screenshot](/images/app_index.png)
